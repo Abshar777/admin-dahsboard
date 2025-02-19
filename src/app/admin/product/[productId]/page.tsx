@@ -1,7 +1,8 @@
 import FormCardSkeleton from '@/components/loading/form-card-skeleton';
 import PageContainer from '@/components/layout/page-container';
 import { Suspense } from 'react';
-import ProductViewPage from '@/features/products/components/product-view-page';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { LoginForm } from '@/components/forms/loginForm';
 
 export const metadata = {
   title: 'Dashboard : Product View'
@@ -14,9 +15,16 @@ export default async function Page(props: PageProps) {
   return (
     <PageContainer scrollable>
       <div className='flex-1 space-y-4'>
-        <Suspense fallback={<FormCardSkeleton />}>
-          <ProductViewPage productId={params.productId} />
-        </Suspense>
+      <Card className='mx-auto w-full'>
+      <CardHeader>
+        <CardTitle className='text-left text-2xl font-bold'>
+          Create New Product
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+       <LoginForm/>
+      </CardContent>
+    </Card>
       </div>
     </PageContainer>
   );

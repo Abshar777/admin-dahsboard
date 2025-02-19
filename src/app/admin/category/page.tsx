@@ -8,6 +8,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { SearchParams } from "nuqs/server";
 import ProductList from "@/components/table/product/product";
+import CatrgoryList from "@/components/table/category/categoryList";
 
 export const metadata = {
   title: "Dashboard: Products",
@@ -30,18 +31,18 @@ export default async function Page(props: pageProps) {
       <div className="flex flex-1 flex-col space-y-4">
         <div className="flex items-start justify-between">
           <Heading
-            title="Products"
-            description="Manage products (Server side table functionalities.)"
+            title="Category"
+            description="Category Listing And Actions "
           />
           <Link
-            href="/admin/product/create"
+            href="/admin/category/create"
             className={cn(buttonVariants(), "text-xs md:text-sm")}
           >
             <Plus className="mr-2 h-4 w-4" /> Add New
           </Link>
         </div>
         <Separator />
-        <ProductList />
+        <CatrgoryList />
       </div>
     </PageContainer>
   );

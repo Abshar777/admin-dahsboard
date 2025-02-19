@@ -30,7 +30,9 @@ import {
     UserCircle2Icon,
     UserPen,
     UserX2Icon,
-    X
+    X,
+    ChartBarStacked,
+    Target
   } from 'lucide-react';
   
   export type Icon = LucideIcon;
@@ -63,6 +65,8 @@ import {
     pizza: Pizza,
     sun: SunMedium,
     moon: Moon,
+    category:ChartBarStacked,
+    brand:Target,
     laptop: Laptop,
     gitHub: ({ ...props }: LucideProps) => (
       <svg

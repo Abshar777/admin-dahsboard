@@ -13,12 +13,69 @@ export const navItems: NavItem[] = [
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
+    title: 'Category',
+    url: '#',
+    icon: 'category',
+    shortcut: ['p', 'p'],
+    isActive: false,
+    items: [
+      {
+        title: 'Create category',
+        url: '/admin/category/create',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
+      {
+        title: 'Category List',
+        url: '/admin/category',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
+    ] // No child items
+  },
+  {
+    title: 'Brand',
+    url: '#',
+    icon: 'brand',
+    shortcut: ['p', 'p'],
+    isActive: false,
+    items: [
+      {
+        title: 'Create category',
+        url: '/admin/category/create',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
+      {
+        title: 'Category List',
+        url: '/admin/category',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
+    ] // No child items
+  },
+  {
     title: 'Product',
-    url: '/admin/product',
+    url: '#',
     icon: 'product',
     shortcut: ['p', 'p'],
     isActive: false,
-    items: [] // No child items
+    items: [
+      {
+        title: 'Create Product',
+        url: '/admin/product/create',
+        icon: 'product',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
+      {
+        title: 'Product List',
+        url: '/admin/product',
+        icon: 'product',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
+    ] // No child items
   },
   {
     title: 'Account',
