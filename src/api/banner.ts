@@ -13,6 +13,6 @@ export const createBanner=async(data:{img:FileList})=>{
 
 
 export const getBanners=async()=>{
-    const response=await AxiosInstance.get(`${BANNER_URL}/data`);
+    const response=await AxiosInstance.get(`${BANNER_URL}/`);
     return response.data
 }

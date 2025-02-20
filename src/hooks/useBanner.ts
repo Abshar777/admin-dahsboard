@@ -1,3 +1,4 @@
+"use client"
 import { createBanner, getBanners } from "@/api/banner"
 import { useMutationData } from "./useMutation"
 import { useQueryData } from "./useQueryData";
