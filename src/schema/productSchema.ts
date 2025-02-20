@@ -24,6 +24,7 @@ const productSchema = z.object({
     }),
     barcode:z.string().optional(),
     category: z.string().nonempty("category must be vali"),
+    subcategories: z.string().nonempty("category must be vali"),
     price: z.number(),
     productDescription: z.string().min(10, {
       message: "Description must be at least 10 characters.",

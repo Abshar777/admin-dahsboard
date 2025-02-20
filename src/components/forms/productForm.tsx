@@ -33,6 +33,7 @@ import { toast } from "sonner";
 import * as z from "zod";
 import AnimatedButton from "../global/globalButton";
 import { useRouter } from "nextjs-toploader/app";
+import { useCetogeryBySubCategory } from "@/hooks/useSubCategory";
 
 const defaultValues = {
   images: [],
@@ -46,10 +47,12 @@ const defaultValues = {
   serialNumber: 1,
   discountInPercentage: 0,
   inStock: 0,
+  subcategories: undefined,
 };
 
 const ProductForm = ({ id }: { id?: string }) => {
   const router = useRouter();
+  const [selectedCat, setselectedCat] = useState("");
   const { data: category } = useCategory();
   const { data: brand } = useBrand();
   const {
@@ -63,6 +66,7 @@ const ProductForm = ({ id }: { id?: string }) => {
   } = useProducts(id);
   const [categories, setcategories] = useState<ICategory[]>([]);
   const [brands, setbrands] = useState<IBrand[]>([]);
+  const [subCategorys, setSubCategorys] = useState<any>([]);
   const actionFn = id ? editFn : mutate;
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
@@ -86,16 +90,29 @@ const ProductForm = ({ id }: { id?: string }) => {
 
   useEffect(() => {
     if (id && data) {
+      console.log((data as any)?.subcategories?.[0])
       form.reset({
         ...data,
         category: (data as any)?.category?._id,
         brand: (data as any)?.brand?._id,
-        modelNumber: Number((data as any)?.modelNumber)||0,
-        serialNumber: Number((data as any)?.serialNumber)||0,
+        subcategories:(data as any)?.subcategories?.[0]?.subcategory,
+        modelNumber: Number((data as any)?.modelNumber) || 0,
+        serialNumber: Number((data as any)?.serialNumber) || 0,
         images: [],
       });
     }
   }, [id, data, form]);
+
+  const { data: subCategory, refetch } = useCetogeryBySubCategory({
+    id: selectedCat,
+  });
+  useEffect(() => {
+    refetch();
+  }, [selectedCat]);
+
+  useEffect(() => {
+    if (subCategory) setSubCategorys(subCategory);
+  }, [subCategory]);
 
   useEffect(() => {
     if (editSuccess || isSuccess) router.push("/admin/product");
@@ -150,7 +167,10 @@ const ProductForm = ({ id }: { id?: string }) => {
               <FormItem>
                 <FormLabel>Category</FormLabel>
                 <Select
-                  onValueChange={(e) => e && field.onChange(e)}
+                  onValueChange={(e) => {
+                    setselectedCat(e);
+                    field.onChange(e);
+                  }}
                   value={field.value}
                 >
                   <FormControl>
@@ -169,6 +189,35 @@ const ProductForm = ({ id }: { id?: string }) => {
                 <FormMessage />
               </FormItem>
             )}
+          />
+          <FormField
+            control={form.control}
+            name="subcategories"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Sub-Categories</FormLabel>
+                  <Select
+                    onValueChange={(e) => e && field.onChange(e)}
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select subcategories" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {(subCategorys as unknown as any).map((subCat: any) => (
+                        <SelectItem key={subCat._id} value={subCat._id}>
+                          {subCat.subcategory}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
           <FormField
             control={form.control}

@@ -13,6 +13,7 @@ import CatrgoryList from "@/components/table/category/categoryList";
 import { SheetReuse } from "@/components/global/sheet";
 import { useState } from "react";
 import SubCategoryList from "@/components/table/subCategory/subCatagoryList";
+import SubCategoryForm from "@/components/forms/subCategoryForm";
 
 type pageProps = {
   searchParams: Promise<SearchParams>;
@@ -30,14 +31,14 @@ export default function Page(props: pageProps) {
         open={create}
         closeFn={closeSheet}
       >
-        <></>
+      <SubCategoryForm/>
       </SheetReuse>
       <PageContainer scrollable={true}>
         <div className="flex flex-1 flex-col space-y-4">
           <div className="flex items-start justify-between">
             <Heading
-              title="Category"
-              description="Category Listing And Actions "
+              title="Sub-Category"
+              description="Sub-Category Listing And Actions "
             />
             <div
               onClick={openSheet}

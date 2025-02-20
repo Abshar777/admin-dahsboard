@@ -4,6 +4,8 @@ import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import { CellAction } from "@/components/global/cell-actions";
+import SubCategoryForm from "@/components/forms/subCategoryForm";
 
 export type SubcategoryColumn = {
   _id: string;
@@ -11,7 +13,9 @@ export type SubcategoryColumn = {
     category: string;
   };
   subcategory: string;
-  isDeleted: boolean;
+  isDeleted: {
+    status:boolean
+  };
 };
 
 export const columns: ColumnDef<SubcategoryColumn>[] = [
@@ -34,9 +38,16 @@ export const columns: ColumnDef<SubcategoryColumn>[] = [
     accessorKey: "isDeleted",
     header: "Status",
     cell: ({ row }) => (
-      <Badge variant={row.getValue("isDeleted") ? "destructive" : "default"}>
-        {row.getValue("isDeleted") ? "Deleted" : "Active"}
+      <Badge variant={row.original.isDeleted.status ? "destructive" : "default"}>
+        {row.original.isDeleted.status ? "Deleted" : "Active"}
       </Badge>
+    ),
+  },
+  {
+    accessorKey: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <CellAction updateForm={<SubCategoryForm id={row.original._id}   />} deletFn={()=>{}}  id={row.original._id}/>
     ),
   },
 ];

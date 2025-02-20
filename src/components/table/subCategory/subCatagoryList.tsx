@@ -18,7 +18,7 @@ const SubCategoryList = (props: Props) => {
     subcategories: SubcategoryColumn[];
   };
 
-  const { data, isPending } = useSubCategory();
+  const { data, isPending } = useSubCategory({enabled:true});
 
   if (isPending) return <DataTableSkeleton />;
 

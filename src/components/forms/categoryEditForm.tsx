@@ -28,7 +28,6 @@ interface Props {
 const CategoryForm = (props: Props) => {
   const [img, setImg] = useState<string | null>(null);
   const ref = useRef<any>(null);
-  const router = useRouter();
   const defaultValues = {
     category: "",
     isActive: true,
