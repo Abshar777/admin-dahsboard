@@ -4,8 +4,7 @@ import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
+import CategoryEditForm from "@/components/forms/categoryEditForm"
 import { CellAction } from "@/components/global/cell-actions";
 
 export type ICategory = {
@@ -92,7 +91,7 @@ export const columns: ColumnDef<CategoryColumn>[] = [
     accessorKey: "actions",
     header: "Actions",
     cell: ({ row }) => (
-      <CellAction id={row.original._id}/>
+      <CellAction updateForm={<CategoryEditForm id={row.original._id}   />} deletFn={()=>{}}  id={row.original._id}/>
     ),
   },
 ];

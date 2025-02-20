@@ -5,7 +5,7 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/web
 
 const categorySchema = z.object({
     img: z.union([
-        z.string().url().optional(), // Accepts an existing image URL
+        z.string().optional(), // Accepts an existing image URL
         z
             .any()
             .refine((files) => !files || files.length === 1, "Image is required.")

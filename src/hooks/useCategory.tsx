@@ -1,5 +1,5 @@
 "use client";
-import { createCategory, getCategorys } from "@/api/category";
+import { createCategory, editCategory, getCategoryById, getCategorys } from "@/api/category";
 import { useQueryData } from "./useQueryData";
 import { useMutationData } from "./useMutation";
 import useZodForm from "./useZodForm";
@@ -10,15 +10,15 @@ export const useCategory = (enabled = true) => {
     enabled,
   });
 
-  const { mutate, isPending: categoryCreationPending,isSuccess } = useMutationData(
-    ["category"],
-    createCategory,
-    "category"
-  );
+  const {
+    mutate,
+    isPending: categoryCreationPending,
+    isSuccess,
+  } = useMutationData(["category"], createCategory, "category");
 
   const { form, formState, onFormSubmit } = useZodForm(categorySchema, mutate, {
     isActive: true,
-    category:""
+    category: "",
   });
 
   return {
@@ -29,6 +29,19 @@ export const useCategory = (enabled = true) => {
     form,
     formState,
     onFormSubmit,
-    isSuccess
+    isSuccess,
   };
+};
+
+export const useEditCategory = (id: string) => {
+  const { data, isPending } = useQueryData(["categoryById"], () =>
+    getCategoryById(id)
+  );
+
+  const { mutate, isPending: isEditing,isSuccess } = useMutationData(
+    ["category", id],
+    (data) => editCategory({...data,_id:id}),
+    "category"
+  );
+  return { data, isPending,mutate,isEditing,isSuccess };
 };
