@@ -55,6 +55,14 @@ export const navItems: NavItem[] = [
     ] // No child items
   },
   {
+    title: 'Orders',
+    url: '/admin/orders',
+    icon: 'order',
+    shortcut: ['p', 'p'],
+    isActive: false,
+   
+  },
+  {
     title: 'Product',
     url: '#',
     icon: 'product',
@@ -77,27 +85,27 @@ export const navItems: NavItem[] = [
       },
     ] // No child items
   },
-  {
-    title: 'Account',
-    url: '#', // Placeholder as there is no direct link for the parent
-    icon: 'billing',
-    isActive: true,
+  // {
+  //   title: 'Account',
+  //   url: '#', // Placeholder as there is no direct link for the parent
+  //   icon: 'billing',
+  //   isActive: true,
 
-    items: [
-      {
-        title: 'Profile',
-        url: '/admin/profile',
-        icon: 'userPen',
-        shortcut: ['m', 'm']
-      },
-      {
-        title: 'Login',
-        shortcut: ['l', 'l'],
-        url: '/',
-        icon: 'login'
-      }
-    ]
-  },
+  //   items: [
+  //     {
+  //       title: 'Profile',
+  //       url: '/admin/profile',
+  //       icon: 'userPen',
+  //       shortcut: ['m', 'm']
+  //     },
+  //     {
+  //       title: 'Login',
+  //       shortcut: ['l', 'l'],
+  //       url: '/',
+  //       icon: 'login'
+  //     }
+  //   ]
+  // },
   {
     title: 'Kanban',
     url: '/admin/kanban',

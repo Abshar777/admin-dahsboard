@@ -32,8 +32,10 @@ import {
     UserX2Icon,
     X,
     ChartBarStacked,
-    Target
+    Target,
   } from 'lucide-react';
+
+  import { FaCartShopping } from "react-icons/fa6";
   
   export type Icon = LucideIcon;
   
@@ -67,6 +69,7 @@ import {
     moon: Moon,
     category:ChartBarStacked,
     brand:Target,
+    order:FaCartShopping ,
     laptop: Laptop,
     gitHub: ({ ...props }: LucideProps) => (
       <svg

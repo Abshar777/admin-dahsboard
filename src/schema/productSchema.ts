@@ -23,16 +23,16 @@ const productSchema = z.object({
       message: "Product name must be at least 2 characters.",
     }),
     barcode:z.string().optional(),
-    category: z.string(),
-    price: z.string(),
+    category: z.string().nonempty("category must be valid"),
+    price: z.number(),
     productDescription: z.string().min(10, {
       message: "Description must be at least 10 characters.",
     }),
     brand:z.string(),
-    modelNumber:z.number().min(10, "Number must be at least 10 characters"),
-    serialNumber:z.number(),
+    modelNumber:z.number().optional(),
+    serialNumber:z.number().optional(),
     discountInPercentage:z.number(),
-    inStock:z.number(),
+    inStock:z.number().min(0, "Number must be greater than zero"),
   });
 
   export default productSchema;
