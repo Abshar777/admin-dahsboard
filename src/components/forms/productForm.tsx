@@ -20,93 +20,94 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Product } from "@/constants/mock-api";
+import { useBrand } from "@/hooks/useBrand";
+import { useCategory } from "@/hooks/useCategory";
+import { useProducts } from "@/hooks/useProducts";
+import productSchema from "@/schema/productSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-interface Props {}
-
-const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
+const mockCategories = [
+  "Beauty Products",
+  "Electronics",
+  "Clothing",
+  "Home & Garden",
+  "Sports & Outdoors",
 ];
+const mockBrands = ["Apple", "Samsung", "Nike", "Adidas", "Sony"];
 
-const formSchema = z.object({
-  image: z
-    .any()
-    .refine((files) => files?.length == 1, "Image is required.")
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
-    )
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
-    ),
-  name: z.string().min(2, {
-    message: "Product name must be at least 2 characters.",
-  }),
-  category: z.string(),
-  price: z.number(),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters.",
-  }),
-});
+const defaultValues = {
+  images: [],
+  productName: "",
+  barcode: "",
+  category: undefined,
+  price: 1,
+  productDescription: "",
+  brand: "",
+  modelNumber: undefined,
+  serialNumber: undefined,
+  discountInPercentage: 0,
+  inStock: 0,
+};
 
-const ProductForm = (props: Props) => {
-  const initialData: Record<string, any> | null = null;
-  const defaultValues = {
-    name: "",
-    category: "",
-    price: 0,
-    description: "",
-  };
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    values: defaultValues,
+const ProductForm = () => {
+  const form = useForm<z.infer<typeof productSchema>>({
+    resolver: zodResolver(productSchema),
+    defaultValues,
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const { data: category } = useCategory();
+  const { data: brand } = useBrand();
+  const { mutate } = useProducts();
+  const [categories, setcategories] = useState([]);
+  const [brands, setbrands] = useState([]);
+
+  useEffect(() => {
+    console.log(category);
+    if (category) {
+      const cat = (category as any).categories.map((e: any) => e.category);
+      setcategories(cat);
+      console.log(cat);
+    }
+    if (brand) {
+      const br = (brand as any).brands.map((e: any) => e.brand);
+      setbrands(br);
+      console.log(br);
+    }
+  }, [brand, category]);
+
+  function onSubmit(values: z.infer<typeof productSchema>) {
     console.log(values);
+    mutate(values)
   }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="image"
+          name="images"
           render={({ field }) => (
-            <div className="space-y-6">
-              <FormItem className="w-full">
-                <FormLabel>Images</FormLabel>
-                <FormControl>
-                  <FileUploader
-                    value={field.value}
-                    onValueChange={field.onChange}
-                    maxFiles={4}
-                    maxSize={4 * 1024 * 1024}
-                    // disabled={loading}
-                    // progresses={progresses}
-                    // pass the onUpload function here for direct upload
-                    // onUpload={uploadFiles}
-                    // disabled={isUploading}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </div>
+            <FormItem className="w-full">
+              <FormLabel>Images</FormLabel>
+              <FormControl>
+                <FileUploader
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  maxFiles={4}
+                  maxSize={4 * 1024 * 1024}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           )}
         />
-
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <FormField
             control={form.control}
-            name="name"
+            name="productName"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Product Name</FormLabel>
@@ -123,21 +124,42 @@ const ProductForm = (props: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Category</FormLabel>
-                <Select
-                  onValueChange={(value) => field.onChange(value)}
-                  value={field.value[field.value.length - 1]}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select categories" />
+                      <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="beauty">Beauty Products</SelectItem>
-                    <SelectItem value="electronics">Electronics</SelectItem>
-                    <SelectItem value="clothing">Clothing</SelectItem>
-                    <SelectItem value="home">Home & Garden</SelectItem>
-                    <SelectItem value="sports">Sports & Outdoors</SelectItem>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat} value={cat}>
+                        {cat}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="brand"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Brand</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select brand" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {brands.map((brand) => (
+                      <SelectItem key={brand} value={brand}>
+                        {brand}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -153,7 +175,6 @@ const ProductForm = (props: Props) => {
                 <FormControl>
                   <Input
                     type="number"
-                    step="0.01"
                     placeholder="Enter price"
                     {...field}
                   />
@@ -165,7 +186,7 @@ const ProductForm = (props: Props) => {
         </div>
         <FormField
           control={form.control}
-          name="description"
+          name="productDescription"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>

@@ -41,14 +41,14 @@ export const navItems: NavItem[] = [
     isActive: false,
     items: [
       {
-        title: 'Create category',
-        url: '/admin/category/create',
+        title: 'Create brand',
+        url: '/admin/brand/create',
         shortcut: ['p', 'p'],
         isActive: false,
       },
       {
-        title: 'Category List',
-        url: '/admin/category',
+        title: 'Brand List',
+        url: '/admin/brand',
         shortcut: ['p', 'p'],
         isActive: false,
       },

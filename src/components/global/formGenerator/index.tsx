@@ -10,7 +10,7 @@ import { IconType } from "react-icons/lib";
 import { Checkbox } from "@/components/ui/checkbox";
 type Props = {
   type?: "text" | "email" | "password" | "number";
-  inputType: "select" | "input" | "textarea" | "checkbox";
+  inputType: "select" | "input" | "textarea" | "checkbox" ;
   options?: { value: string; label: string; id: string }[];
   label?: string;
   placeholder?: string;
@@ -29,7 +29,7 @@ const FormGenerator = ({
   inputType,
   options,
   label,
-  placeholder="",
+  placeholder = "",
   register,
   name,
   errors,
@@ -64,12 +64,7 @@ const FormGenerator = ({
               id={`input-${label}`}
               type={Type}
               placeholder={placeholder}
-              className={cn(
-                `${
-                  errors[name] && "errInput"
-                } flex-1`,
-                className
-              )}
+              className={cn(`${errors[name] && "errInput"} flex-1`, className)}
               {...register(name)}
             />
             {type == "password" && (
@@ -108,11 +103,7 @@ const FormGenerator = ({
           >
             {options?.length &&
               options.map((option) => (
-                <option
-                  value={option.value}
-                  key={option.id}
-                  className=""
-                >
+                <option value={option.value} key={option.id} className="">
                   {option.label}
                 </option>
               ))}
@@ -170,12 +161,10 @@ const FormGenerator = ({
           <label
             htmlFor={label}
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-
           >
             {label}
           </label>
         </div>
-
       );
     default:
       break;

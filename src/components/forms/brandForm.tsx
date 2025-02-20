@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Product } from "@/constants/mock-api";
-import categorySchema from "@/schema/categorySchem";
+import brandSchema from "@/schema/brandSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -30,6 +30,7 @@ import AnimatedButton from "../global/globalButton";
 import { useCategory } from "@/hooks/useCategory";
 import { useRouter } from "nextjs-toploader/app";
 import { useEffect } from "react";
+import { useBrand } from "@/hooks/useBrand";
 
 interface Props {}
 
@@ -63,22 +64,21 @@ const formSchema = z.object({
   }),
 });
 
-const CategoryForm = (props: Props) => {
+const BrandForm = (props: Props) => {
   const router = useRouter();
   const initialData: Record<string, any> | null = null;
   const defaultValues = {
-    category: "",
-    isActive: true,
-    img: [],
+   brand:""
   };
 
-  const form = useForm<z.infer<typeof categorySchema>>({
-    resolver: zodResolver(categorySchema),
+  const form = useForm<z.infer<typeof brandSchema>>({
+    resolver: zodResolver(brandSchema),
     values: defaultValues,
   });
-  const { mutate, categoryCreationPending,isSuccess } = useCategory(false);
+  const { mutate, creationPending,isSuccess } = useBrand(false);
 
-  function onSubmit(values: z.infer<typeof categorySchema>) {
+
+  function onSubmit(values: z.infer<typeof brandSchema>) {
   console.log(values)
     mutate(values);
     form.reset();
@@ -92,62 +92,19 @@ const CategoryForm = (props: Props) => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="grid md:grid-cols-2 grid-cols-1">
-          <FormField
-            control={form.control}
-            name="img"
-            render={({ field }) => (
-              <div className="space-y-6">
-                <FormItem className="w-full">
-                  <FormLabel>Images</FormLabel>
-                  <FormControl>
-                    <FileUploader
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      maxFiles={1}
-                      maxSize={1 * 1024 * 1024}
-                      // disabled={loading}
-                      // progresses={progresses}
-                      // pass the onUpload function here for direct upload
-                      // onUpload={uploadFiles}
-                      // disabled={isUploading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              </div>
-            )}
-          />
+      
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <FormField
             control={form.control}
-            name="category"
+            name="brand"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Product Name</FormLabel>
+                <FormLabel>Brand Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter product name" {...field} />
+                  <Input placeholder="Enter Brand name" {...field} />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="isActive"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex gap-2 mt-8 items-center">
-                  <FormLabel>show</FormLabel>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -156,10 +113,11 @@ const CategoryForm = (props: Props) => {
 
         <div className="grid md:grid-cols-2 grid-cols-1">
           <AnimatedButton
+          size="md"
             type="submit"
-            text="create catgerory"
+            text="create Brand"
             loadingText="creating"
-            isLoading={categoryCreationPending}
+            isLoading={creationPending}
           />
         </div>
       </form>
@@ -167,4 +125,4 @@ const CategoryForm = (props: Props) => {
   );
 };
 
-export default CategoryForm;
+export default BrandForm;
