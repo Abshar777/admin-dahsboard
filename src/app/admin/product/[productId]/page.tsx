@@ -3,6 +3,7 @@ import PageContainer from '@/components/layout/page-container';
 import { Suspense } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LoginForm } from '@/components/forms/loginForm';
+import ProductForm from '@/components/forms/productForm';
 
 export const metadata = {
   title: 'Dashboard : Product View'
@@ -22,7 +23,7 @@ export default async function Page(props: PageProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-       <LoginForm/>
+       <ProductForm id={params.productId}/>
       </CardContent>
     </Card>
       </div>

@@ -25,11 +25,14 @@ import { useCategory } from "@/hooks/useCategory";
 import { useProducts } from "@/hooks/useProducts";
 import productSchema from "@/schema/productSchema";
 import { IBrand } from "@/types/IBrand";
+import { IProduct } from "@/types/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import AnimatedButton from "../global/globalButton";
+import { useRouter } from "nextjs-toploader/app";
 
 const defaultValues = {
   images: [],
@@ -45,40 +48,69 @@ const defaultValues = {
   inStock: 0,
 };
 
-const ProductForm = () => {
+const ProductForm = ({ id }: { id?: string }) => {
+  const router = useRouter();
+  const { data: category } = useCategory();
+  const { data: brand } = useBrand();
+  const {
+    mutate,
+    data,
+    editFn,
+    editPending,
+    isLoading,
+    editSuccess,
+    isSuccess,
+  } = useProducts(id);
+  const [categories, setcategories] = useState<ICategory[]>([]);
+  const [brands, setbrands] = useState<IBrand[]>([]);
+  const actionFn = id ? editFn : mutate;
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
     defaultValues,
   });
 
-  const { data: category } = useCategory();
-  const { data: brand } = useBrand();
-  const { mutate } = useProducts();
-  const [categories, setcategories] = useState<ICategory[]>([]);
-  const [brands, setbrands] = useState<IBrand[]>([]);
-
   useEffect(() => {
     if (category) {
-      const cat = (category as any).categories
+      const cat = (category as any).categories;
       setcategories(cat);
     }
     if (brand) {
-      const br = (brand as any).brands as IBrand[]
+      const br = (brand as any).brands as IBrand[];
       setbrands(br);
     }
   }, [brand, category]);
 
   function onSubmit(values: z.infer<typeof productSchema>) {
-    mutate(values);
+    actionFn({ ...values, _id: id });
   }
-  
+
+  useEffect(() => {
+    if (id && data) {
+      form.reset({
+        ...data,
+        category: (data as any)?.category?._id,
+        brand: (data as any)?.brand?._id,
+        modelNumber: Number((data as any)?.modelNumber)||0,
+        serialNumber: Number((data as any)?.serialNumber)||0,
+        images: [],
+      });
+    }
+  }, [id, data, form]);
+
+  useEffect(() => {
+    if (editSuccess || isSuccess) router.push("/admin/product");
+  }, [editSuccess, isSuccess]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit, (err) => {
-      Object.values(err).forEach((error: any) => {
-        if (error?.message) toast.error(error.message.toString());
-      })})} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit, (err) => {
+          Object.values(err).forEach((error: any) => {
+            if (error?.message) toast.error(error.message.toString());
+          });
+        })}
+        className="space-y-8"
+      >
         <FormField
           control={form.control}
           name="images"
@@ -117,14 +149,17 @@ const ProductForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Category</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={(e) => e && field.onChange(e)}
+                  value={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
+                      <SelectValue placeholder={field.value} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {categories.map((cat:ICategory) => (
+                    {categories.map((cat: ICategory) => (
                       <SelectItem key={cat._id} value={cat._id}>
                         {cat.category}
                       </SelectItem>
@@ -141,7 +176,10 @@ const ProductForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Brand</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={(e) => e && field.onChange(e)}
+                  value={field.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select brand" />
@@ -171,7 +209,9 @@ const ProductForm = () => {
                     step="0.01"
                     placeholder="Enter price"
                     {...field}
-                    onChange={e=>field.onChange(Number(e.target.value))}
+                    onChange={(e) =>
+                      field.onChange(Number(e.target.value) || 0)
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -186,10 +226,12 @@ const ProductForm = () => {
                 <FormLabel>Serial Number</FormLabel>
                 <FormControl>
                   <Input
+                    {...field}
                     type="number"
-                   
                     placeholder="Enter Serial Number"
-                   onChange={e=>field.onChange(Number(e.target.value))}
+                    onChange={(e) =>
+                      e && field.onChange(Number(e.target.value) || 0)
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -207,7 +249,9 @@ const ProductForm = () => {
                     type="number"
                     placeholder="Enter Model Number"
                     {...field}
-                    onChange={e=>field.onChange(e.target.value?Number(e.target.value):0)}
+                    onChange={(e) =>
+                      e && field.onChange(Number(e.target.value) || 0)
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -226,7 +270,9 @@ const ProductForm = () => {
                     step="1"
                     placeholder="Enter Stock"
                     {...field}
-                    onChange={e=>field.onChange(Number(e.target.value))}
+                    onChange={(e) =>
+                      e && field.onChange(Number(e.target.value) || 0)
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -245,7 +291,9 @@ const ProductForm = () => {
                     step="0.01"
                     placeholder="Enter discount"
                     {...field}
-                    onChange={e=>field.onChange(Number(e.target.value))}
+                    onChange={(e) =>
+                      e && field.onChange(Number(e.target.value) || 0)
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -270,7 +318,11 @@ const ProductForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Add Product</Button>
+        <AnimatedButton
+          type="submit"
+          text={id ? "edite product" : "add product"}
+          isLoading={editPending || isLoading}
+        />
       </form>
     </Form>
   );

@@ -1,62 +1,60 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+} from "@tanstack/react-table";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from "nextjs-toploader/app";
 
 export type Product = {
-  id: string
-  images: { image1?: string }
-  productName: string
-  price: number
-  discountInPercentage?: number
-  category: { category: string }
-  inStock: number
-  isActive: boolean
-}
+  _id: string;
+  images: { image1?: string };
+  productName: string;
+  price: number;
+  discountInPercentage?: number;
+  category: { category: string };
+  inStock: number;
+  isActive: boolean;
+};
 
 export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "images.image1",
     header: "Image",
-    cell: ({ row }) => (
-      <Avatar>
-      <AvatarImage src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${row.original.images.image1}`} alt={row.original.productName} />
-      <AvatarFallback>{row.original.productName.split("").splice(0,2).join("")}</AvatarFallback>
-    </Avatar>
-    ),
+    cell: ({ row }) => {
+      const router = useRouter();
+      return (
+        <Avatar
+          className="cursor-pointer"
+          onClick={() => router.push(`/admin/product/${row.original._id}`)}
+        >
+          <AvatarImage
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${row.original.images.image1}`}
+            alt={row.original.productName}
+          />
+          <AvatarFallback>
+            {row.original.productName.split("").splice(0, 2).join("")}
+          </AvatarFallback>
+        </Avatar>
+      );
+    },
   },
   {
     accessorKey: "productName",
     header: "Name",
-    cell: ({ row }) => <div>{row.getValue("productName")}</div>,
+    cell: ({ row }) => {
+      const router = useRouter();
+      return (
+        <div
+          onClick={() => router.push(`/admin/product/${row.original._id}`)}
+          className="cursor-pointer"
+        >
+          {row.getValue("productName")}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "price",
@@ -71,7 +69,7 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "category.category",
     header: "Category",
-    cell: ({ row }) => <div>{row.original.category.category}</div>,
+    cell: ({ row }) => <div>{row?.original?.category?.category || "N/A"}</div>,
   },
   {
     accessorKey: "inStock",
@@ -87,4 +85,4 @@ export const columns: ColumnDef<Product>[] = [
       </Badge>
     ),
   },
-]
+];

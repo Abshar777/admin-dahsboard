@@ -16,12 +16,11 @@ const ProductList = () => {
     currentPage: number;
     totalPages: number;
   };
-
   const { data, isPending } = useProducts();
 
   if (isPending) return <DataTableSkeleton />;
 
-  if (data) {
+  if (data&&(data as TData)?.products) {
     const products = (data as TData).products;
     return (
       <DataTable search={"productName"} data={products} columns={columns} />

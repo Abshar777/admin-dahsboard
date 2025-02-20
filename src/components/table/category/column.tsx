@@ -1,10 +1,14 @@
 "use client";
 
 import * as React from "react";
-import {ColumnDef} from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { MoreHorizontal } from "lucide-react";
+import { CellAction } from "@/components/global/cell-actions";
 
-export type Cloumn = {
+export type ICategory = {
   _id: string;
   discountInPercentage?: number;
   category: string;
@@ -14,61 +18,81 @@ export type Cloumn = {
   categoryIsDisabled?: boolean;
   inStock: number;
   isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
-export const columns: ColumnDef<Cloumn>[] = [
+export type CategoryColumn = {
+  _id: string;
+  category: string;
+  img?: string;
+  isDisabled: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export const columns: ColumnDef<CategoryColumn>[] = [
+  {
+    accessorKey: "rowNumber",
+    header: "#",
+    cell: ({ row }) => <div>{row.index + 1}</div>,
+  },
   {
     accessorKey: "category",
-    header: "Category",
+    header: "Name",
     cell: ({ row }) => <div>{row.getValue("category")}</div>,
   },
   {
-    accessorKey: "discountInPercentage",
-    header: "Offer",
-    cell: ({ row }) => <div>{row.getValue("discountInPercentage") ?? 0} %</div>,
+    accessorKey: "img",
+    header: "Image",
+    cell: ({ row }) => (
+      <Avatar>
+        <AvatarImage
+          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${row.original.img}`}
+          alt={row.original.category}
+        />
+        <AvatarFallback>
+          {row.original.category.split("").splice(0, 2).join("")}
+        </AvatarFallback>
+      </Avatar>
+    ),
   },
-
   {
-    accessorKey: "discountExpiresIn",
-    header: "Discount Expiry",
+    accessorKey: "isDisabled",
+    header: "Status",
+    cell: ({ row }) => (
+      <Badge variant={row.getValue("isDisabled") ? "destructive" : "default"}>
+        {row.getValue("isDisabled") ? "Inactive" : "Active"}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Created At",
     cell: ({ row }) => (
       <div>
-        {row.original.discountExpiresIn
-          ? new Date(row.original.discountExpiresIn).toLocaleDateString()
+        {row.original.createdAt
+          ? new Date(row.original.createdAt).toLocaleDateString()
           : "N/A"}
       </div>
     ),
   },
   {
-    accessorKey: "categoryDiscountInPercentage",
-    header: "Category Discount",
+    accessorKey: "updatedAt",
+    header: "Upadted At",
     cell: ({ row }) => (
-      <div>{row.getValue("categoryDiscountInPercentage") ?? 0} %</div>
+      <div>
+        {row.original.updatedAt
+          ? new Date(row.original.updatedAt).toLocaleDateString()
+          : "N/A"}
+      </div>
     ),
   },
   {
-    accessorKey: "categoryDiscountStatus",
-    header: "Discount Status",
-    cell: ({ row }) => <div>{row.original.discountStatus}</div>,
-  },
-  {
-    accessorKey: "categoryIsDisabled",
-    header: "Category Disabled",
+    accessorKey: "actions",
+    header: "Actions",
     cell: ({ row }) => (
-      <Badge
-        variant={row.getValue("categoryIsDisabled") ? "destructive" : "default"}
-      >
-        {row.getValue("categoryIsDisabled") ? "Disabled" : "Enabled"}
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: "isActive",
-    header: "Status",
-    cell: ({ row }) => (
-      <Badge variant={row.getValue("isActive") ? "default" : "destructive"}>
-        {row.getValue("isActive") ? "Active" : "Inactive"}
-      </Badge>
+      <CellAction id={row.original._id}/>
     ),
   },
 ];

@@ -1,4 +1,5 @@
 import { MutationFunction, MutationKey, useMutation, useMutationState, useQueryClient } from "@tanstack/react-query"
+import { AxiosError } from "axios"
 import { toast } from "sonner"
 
 export const useMutationData = (mutationKey: MutationKey,
@@ -11,7 +12,8 @@ export const useMutationData = (mutationKey: MutationKey,
         mutationKey,
         mutationFn,
         onError(error) {
-            toast.error(error.message?.toString())
+            const err = (error as AxiosError)
+            toast.error((err.response?.data as { message: string })?.message as string)
         },
         onSuccess(data) {
             // console.log(data,"dataaaaa , onSuccess",queryKey)

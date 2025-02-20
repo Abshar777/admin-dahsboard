@@ -10,7 +10,7 @@ const ACCEPTED_IMAGE_TYPES = [
 const productSchema = z.object({
     images: z
       .any()
-      .refine((files) => files?.length == 1, "Image is required.")
+      .refine((files) => files?.length >= 1 && files?.length <= 4, "You must upload between 1 and 4 images.")
       .refine(
         (files) => files?.[0]?.size <= MAX_FILE_SIZE,
         `Max file size is 5MB.`
@@ -23,7 +23,7 @@ const productSchema = z.object({
       message: "Product name must be at least 2 characters.",
     }),
     barcode:z.string().optional(),
-    category: z.string().nonempty("category must be valid"),
+    category: z.string().nonempty("category must be vali"),
     price: z.number(),
     productDescription: z.string().min(10, {
       message: "Description must be at least 10 characters.",

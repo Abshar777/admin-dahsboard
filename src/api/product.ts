@@ -1,11 +1,15 @@
 import { PRODUCTS_URL } from "@/constants/api";
+import { Product } from "@/components/table/product/column"; 
+
 import AxiosInstance from "@/utils/axios";
 
-export const getProducts = async (filters?: {
-    categories?: string | undefined;
-    search?: string | undefined;
-    page: number;
-    limit: number;
+export const getProducts = async ({ filters, id }: {
+    filters?: {
+        categories?: string | undefined;
+        search?: string | undefined;
+        page: number;
+        limit: number;
+    }, id?: string
 }) => {
     const params = new URLSearchParams();
 
@@ -43,6 +47,39 @@ export const createProduct = async (data: {
     for (let i = 0; i < data.images.length; i++) {
         formData.append(`image${i + 1}`, data.images[i]);
     }
-    const response = await AxiosInstance.post(`${PRODUCTS_URL}/`,formData);
+    const response = await AxiosInstance.post(`${PRODUCTS_URL}/`, formData);
     return response.data
+}
+
+
+
+export const getProductByID = async ({ id }: { id?: string }) => {
+    const { data } = await AxiosInstance.get(`${PRODUCTS_URL}/${id}`)
+    return data;
+}
+
+
+export const editProduct=async(data:{
+    _id:string,
+    productName: string,
+    productDescription: string,
+    barcode: string,
+    brand: string,
+    price: string,
+    modelNumber: string,
+    serialNumber: string,
+    discountInPercentage: string,
+    inStock: string,
+    category: string,
+    images: File[]
+})=>{
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(data)) {
+        formData.append(key, JSON.stringify(value));
+    }
+    for (let i = 0; i < data.images.length; i++) {
+        formData.append(`image${i + 1}`, data.images[i]);
+    }
+    const response=await AxiosInstance.patch(`${PRODUCTS_URL}/${data._id}`,formData);
+    return response.data;
 }
