@@ -31,6 +31,12 @@ export const navItems: NavItem[] = [
         shortcut: ['p', 'p'],
         isActive: false,
       },
+      {
+        title: 'Sub-Catgory ',
+        url: '/admin/category/sub',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
     ] // No child items
   },
   {
@@ -85,6 +91,29 @@ export const navItems: NavItem[] = [
       },
     ] // No child items
   },
+  {
+    title: 'Banner',
+    url: '#',
+    icon: 'kanban',
+    shortcut: ['p', 'p'],
+    isActive: false,
+    items: [
+      {
+        title: 'Create Banner',
+        url: '/admin/banner/create',
+        icon: 'product',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
+      {
+        title: 'Banner List',
+        url: '/admin/banner',
+        icon: 'product',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
+    ] // No child items
+  },
   // {
   //   title: 'Account',
   //   url: '#', // Placeholder as there is no direct link for the parent
@@ -106,14 +135,7 @@ export const navItems: NavItem[] = [
   //     }
   //   ]
   // },
-  {
-    title: 'Kanban',
-    url: '/admin/kanban',
-    icon: 'kanban',
-    shortcut: ['k', 'k'],
-    isActive: false,
-    items: [] // No child items
-  }
+ 
 ];
 
 
