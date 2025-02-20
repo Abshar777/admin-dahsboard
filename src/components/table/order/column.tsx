@@ -3,6 +3,8 @@
 import * as React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
+import { CellAction } from "@/components/global/cell-actions";
+import OderInfo from "@/components/global/orderInfo";
 
 export type IOrder = {
   _id: string;
@@ -84,6 +86,13 @@ export const columns: ColumnDef<IOrder>[] = [
           ? new Date(row.original.createdAt).toLocaleDateString()
           : "N/A"}
       </div>
+    ),
+  },
+  {
+    accessorKey: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <CellAction  info={<OderInfo order={row.original as any}/>}  id={row.original._id}/>
     ),
   },
 ];

@@ -9,6 +9,7 @@ import { useCategory } from "@/hooks/useCategory";
 import { useBrand } from "@/hooks/useBrand";
 import { IBrand } from "@/types/IBrand";
 import { useOrder } from "@/hooks/useOrder";
+import OrderDetailsModal from "@/components/global/orderInfo";
 
 interface Props {}
 
@@ -20,14 +21,17 @@ const OrderList = (props: Props) => {
   };
 
   const { data, isPending } = useOrder();
-  console.log(data,"data");
+  console.log(data, "data");
 
   if (isPending) return <DataTableSkeleton />;
 
   if (data) {
     const orders = (data as TData).orders;
-    console.log(orders);
-    return <DataTable search={""} data={orders} columns={columns} />
+    return (
+      <>
+        <DataTable search={""} data={orders} columns={columns} />
+      </>
+    );
   }
   return null;
 };
