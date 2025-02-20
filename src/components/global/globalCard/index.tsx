@@ -7,14 +7,15 @@ interface GlobalCardProps {
 //   description: string
 //   price: number
 //   rating: number
-  imageUrl: string
+  imageUrl: string;
+  onClick?:Function;
 }
 
-export default function GlobalCard({  imageUrl }: GlobalCardProps) {
+export default function GlobalCard({  imageUrl ,onClick}: GlobalCardProps) {
   return (
-    <div className="bg-muted  rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
-      <div className="relative h-48 w-full">
-        <Image src={imageUrl || "/placeholder.svg"} alt={""} layout="fill" objectFit="cover" />
+    <div onClick={()=>onClick&&onClick()} className="bg-muted  rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+      <div className="relative h-48 w-full overflow-hidden">
+        <img src={imageUrl || "/placeholder.svg"} alt={""}  className="w-full h-full object-cover"/>
       </div>
       {/* <div className="p-4">
         <h2 className="text-xl font-semibold text-gray-800 mb-2">{name}</h2>
