@@ -7,10 +7,7 @@ import AnimatedButton from "../global/globalButton";
 import Alert from "../ui/alertBadge";
 import { useEffect, useState } from "react";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function LoginForm() {
   const { register, errors, onFormSubmit, isPending, isSuccess } = useAuth();
   const [err, seterr] = useState<string | null>(null);
   useEffect(() => {

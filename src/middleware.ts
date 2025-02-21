@@ -1,5 +1,4 @@
 // middleware.ts
-import { withAuth } from "next-auth/middleware"
 import { NextRequest, NextResponse } from "next/server"
 
 // Create a middleware function without withAuth first

@@ -130,7 +130,7 @@ export function FileUploader(props: FileUploaderProps) {
         })
       );
 
-      const updatedFiles = files ? [...files, ...newFiles] : newFiles;
+      const updatedFiles = files ? [...(files as any), ...newFiles] : newFiles;
 
       setFiles(updatedFiles);
 
@@ -164,7 +164,7 @@ export function FileUploader(props: FileUploaderProps) {
 
   function onRemove(index: number) {
     if (!files) return;
-    const newFiles = files.filter((_, i) => i !== index);
+    const newFiles = (files as any).filter((_, i) => i !== index);
     setFiles(newFiles);
     onValueChange?.(newFiles);
   }
@@ -173,7 +173,7 @@ export function FileUploader(props: FileUploaderProps) {
   React.useEffect(() => {
     return () => {
       if (!files) return;
-      files.forEach((file) => {
+      (files as any).forEach((file:any) => {
         if (isFileWithPreview(file)) {
           URL.revokeObjectURL(file.preview);
         }
@@ -247,7 +247,7 @@ export function FileUploader(props: FileUploaderProps) {
       {files?.length ? (
         <ScrollArea className='h-fit w-full px-3'>
           <div className='max-h-48 space-y-4'>
-            {files?.map((file, index) => (
+            {(files as any)?.map((file, index) => (
               <FileCard
                 key={index}
                 file={file}

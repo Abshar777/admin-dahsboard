@@ -1,8 +1,6 @@
 "use client";
 
 import { FileUploader } from "@/components/global/fileUploader";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -25,7 +23,6 @@ import { useCategory } from "@/hooks/useCategory";
 import { useProducts } from "@/hooks/useProducts";
 import productSchema from "@/schema/productSchema";
 import { IBrand } from "@/types/IBrand";
-import { IProduct } from "@/types/product";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -93,7 +90,7 @@ const ProductForm = ({ id }: { id?: string }) => {
     if (id && data) {
       console.log((data as any)?.subcategories?.[0]);
       form.reset({
-        ...data,
+        ...(data as any),
         category: (data as any)?.category?._id,
         brand: (data as any)?.brand?._id,
         subcategories: (data as any)?.subcategories?.[0]?.subcategory,
@@ -109,7 +106,7 @@ const ProductForm = ({ id }: { id?: string }) => {
   });
   useEffect(() => {
     refetch();
-  }, [selectedCat]);
+  }, [selectedCat,]);
 
   useEffect(() => {
     if (subCategory) setSubCategorys(subCategory);

@@ -12,7 +12,6 @@ import { useRouter } from "nextjs-toploader/app";
 export const useAuth = () => {
     const router=useRouter()
     const { openModal, closeModal } = useModalStore()
-    const [email, setemail] = useState("")
     const { mutate, isPending, error: mutationError, isSuccess } = useMutationData(['user'],
         (data) => login(data),
         "user",
