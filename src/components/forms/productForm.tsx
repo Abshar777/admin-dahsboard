@@ -34,6 +34,7 @@ import * as z from "zod";
 import AnimatedButton from "../global/globalButton";
 import { useRouter } from "nextjs-toploader/app";
 import { useCetogeryBySubCategory } from "@/hooks/useSubCategory";
+import { IndianRupee } from "lucide-react";
 
 const defaultValues = {
   images: [],
@@ -90,12 +91,12 @@ const ProductForm = ({ id }: { id?: string }) => {
 
   useEffect(() => {
     if (id && data) {
-      console.log((data as any)?.subcategories?.[0])
+      console.log((data as any)?.subcategories?.[0]);
       form.reset({
         ...data,
         category: (data as any)?.category?._id,
         brand: (data as any)?.brand?._id,
-        subcategories:(data as any)?.subcategories?.[0]?.subcategory,
+        subcategories: (data as any)?.subcategories?.[0]?.subcategory,
         modelNumber: Number((data as any)?.modelNumber) || 0,
         serialNumber: Number((data as any)?.serialNumber) || 0,
         images: [],
@@ -118,6 +119,9 @@ const ProductForm = ({ id }: { id?: string }) => {
     if (editSuccess || isSuccess) router.push("/admin/product");
   }, [editSuccess, isSuccess]);
 
+  const price = form.watch("price") || 0;
+  const discountInPercentage = form.watch("discountInPercentage") || 0;
+  const finalPrice = price - price * (discountInPercentage / 100);
   return (
     <Form {...form}>
       <form
@@ -349,6 +353,14 @@ const ProductForm = ({ id }: { id?: string }) => {
               </FormItem>
             )}
           />
+
+          <div className="flex items-center justify-end mt-10">
+            <h1 className="text-2xl flex items-center dark:text-green-200 light:text-green-700 capitalize">
+              final Price:
+              <IndianRupee className="mt-1"/>
+              {finalPrice }
+            </h1>
+          </div>
         </div>
         <FormField
           control={form.control}

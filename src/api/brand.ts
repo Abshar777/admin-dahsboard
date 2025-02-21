@@ -6,7 +6,13 @@ export const getBrand = async () => {
     return response.data;
 }
 
-export const createBrand=async(data:{brand:string})=>{
-    const response=await AxiosInstance.post(`${BRAND_URL}/`,data);
+export const createBrand = async (data: { brand: string }) => {
+    const response = await AxiosInstance.post(`${BRAND_URL}/`, data);
+    return response.data;
+}
+
+
+export const editBrand = async (data: { brand: string, isDisabled: boolean, _id: string }) => {
+    const response = await AxiosInstance.patch(`${BRAND_URL}/${data._id}`, data);
     return response.data;
 }

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ProductForm from "@/components/forms/productForm";
 import CategoryForm from "@/components/forms/category";
 import BannerForm from "@/components/forms/bannerForm";
+import SectionForm from "@/components/forms/sectionForm";
 
 export const metadata = {
   title: "Dashboard : Product Craetion",
@@ -20,11 +21,11 @@ export default  function Page(props: PageProps) {
           <Card className="mx-auto w-full">
             <CardHeader>
               <CardTitle className="text-left text-2xl font-bold">
-                Create New Banner
+                Create New Section
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <BannerForm />
+              <SectionForm />
             </CardContent>
           </Card>
         </Suspense>

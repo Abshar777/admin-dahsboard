@@ -123,7 +123,7 @@ const BannerEditForm = ({ id }: Props) => {
                       >
                         {img ? (
                           <img
-                            className="w-full h-full rounded-xl  object-cover"
+                            className="w-full h-48 rounded-xl  object-cover"
                             src={
                               (img as string).startsWith("blob")
                                 ? (img as string)

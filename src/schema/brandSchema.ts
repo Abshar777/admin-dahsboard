@@ -5,6 +5,17 @@ const brandSchema = z.object({
     
 })
 
+
+export const brandEditSchema = z.object({
+    brand: z.string().min(2,"minimum 2 characters"),
+    isDisabled:z.boolean()
+    
+})
+
+
+
+
+
 export type brandSchemaType = z.infer<typeof brandSchema>
 export default brandSchema;
     

@@ -114,6 +114,30 @@ export const navItems: NavItem[] = [
       },
     ] // No child items
   },
+  {
+    title: 'Home Page Sections',
+    url: '#',
+    icon: 'section',
+    shortcut: ['p', 'p'],
+    isActive: false,
+    items: [
+      {
+        title: 'Create section',
+        url: '/admin/section/create',
+        icon: 'product',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
+      {
+        title: 'Section List',
+        url: '/admin/section',
+        icon: 'product',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
+    ] // No child items
+  },
+  
   // {
   //   title: 'Account',
   //   url: '#', // Placeholder as there is no direct link for the parent

@@ -85,7 +85,7 @@ const BrandForm = (props: Props) => {
   }
   useEffect(() => {
     if (isSuccess) {
-      router.push("/admin/category");
+      router.push("/admin/brand");
     }
   }, [isSuccess]);
   return (

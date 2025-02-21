@@ -35,12 +35,7 @@ export default async function Page(props: pageProps) {
             title="Orders"
             description="orders Listing And Actions "
           />
-          <Link
-            href="/admin/orders/create"
-            className={cn(buttonVariants(), "text-xs md:text-sm")}
-          >
-            <Plus className="mr-2 h-4 w-4" /> Add New
-          </Link>
+        
         </div>
         <Separator />
         <OrderList />

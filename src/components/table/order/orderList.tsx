@@ -2,14 +2,8 @@
 import React from "react";
 import { DataTable } from "../../global/data-table";
 import { columns, IOrder } from "./column";
-import { IProduct } from "@/types/product";
-import { useProducts } from "@/hooks/useProducts";
 import { DataTableSkeleton } from "../../global/table/data-table-skeleton";
-import { useCategory } from "@/hooks/useCategory";
-import { useBrand } from "@/hooks/useBrand";
-import { IBrand } from "@/types/IBrand";
 import { useOrder } from "@/hooks/useOrder";
-import OrderDetailsModal from "@/components/global/orderInfo";
 
 interface Props {}
 

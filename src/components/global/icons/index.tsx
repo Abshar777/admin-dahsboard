@@ -36,6 +36,7 @@ import {
   } from 'lucide-react';
 
   import { FaCartShopping } from "react-icons/fa6";
+  import { LiaPagerSolid } from "react-icons/lia";
   
   export type Icon = LucideIcon;
   
@@ -70,6 +71,7 @@ import {
     category:ChartBarStacked,
     brand:Target,
     order:FaCartShopping ,
+    section:LiaPagerSolid,
     laptop: Laptop,
     gitHub: ({ ...props }: LucideProps) => (
       <svg

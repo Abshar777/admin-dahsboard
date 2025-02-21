@@ -134,9 +134,9 @@ const CategoryForm = (props: Props) => {
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Product Name</FormLabel>
+                <FormLabel>Category Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter product name" {...field} />
+                  <Input placeholder="Enter Category name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

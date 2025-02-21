@@ -20,3 +20,5 @@ export const useBannerEdit = (id: string) => {
 
     return { data, isPending,mutate,isLoading,isSuccess }
 }
+
+

@@ -32,7 +32,7 @@ const productSchema = z.object({
     brand:z.string(),
     modelNumber:z.number().optional(),
     serialNumber:z.number().optional(),
-    discountInPercentage:z.number(),
+    discountInPercentage:z.number().max(80,"maximum 80% discount"),
     inStock:z.number().min(0, "Number must be greater than zero"),
   });
 
