@@ -103,7 +103,8 @@ const OrderInfo = ({ order }: OrderDetailsModalProps) => {
         <div className="flex-1">
           <p className="text-lg font-semibold">{order.product.productName}</p>
           <p className="text-gray-600 flex items-center gap-1">
-            <IndianRupee size={16} /> {order.product.price}
+            {order.product.price}
+            SAR 
           </p>
           <p>
             <strong>Quantity:</strong> {order.product.qty}
@@ -167,7 +168,7 @@ const OrderInfo = ({ order }: OrderDetailsModalProps) => {
       </div>
 
       <p className="font-semibold text-lg flex items-center gap-1">
-        <IndianRupee size={20} /> Grand Total: {order.grandTotal}
+        Grand Total: {order.grandTotal} SAR
       </p>
     </ScrollArea>
   );
