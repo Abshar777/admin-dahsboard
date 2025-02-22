@@ -41,6 +41,15 @@ export const authConfig: AuthOptions = {
   session: {
     strategy: "jwt"
   },
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      baseUrl=process.env.NEXT_PUBLIC_FRONTEND_URL;
+      console.log(baseUrl)
+      // Redirect to home page after logout
+      return url.startsWith(baseUrl) ? url :`${baseUrl}/auth/login`;
+    },
+  },
+
   secret: process.env.NEXTAUTH_SECRET || "secret"
 };
 
