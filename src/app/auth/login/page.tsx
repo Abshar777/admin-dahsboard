@@ -21,9 +21,9 @@ export default function LoginPage({
                 <div className="flex h-8 w-8 items-center justify-center rounded-md">
                   <GalleryVerticalEnd className="size-6" />
                 </div>
-                <span className="sr-only">Acme Inc.</span>
+                <span className="sr-only">OTO Admin.</span>
               </a>
-              <h1 className="text-xl font-bold">Welcome to Acme Inc.</h1>
+              <h1 className="text-xl font-bold">Welcome to OTO Admin.</h1>
               <div className="text-center text-sm">
                 Only Admin Can login Here
               </div>

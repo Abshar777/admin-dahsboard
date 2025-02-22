@@ -47,7 +47,7 @@ import * as React from 'react';
 import { Icons } from '../global/icons';
 
 export const company = {
-  name: 'Acme Inc',
+  name: 'OTO Admin',
   logo: GalleryVerticalEnd,
   plan: 'Enterprise'
 };
