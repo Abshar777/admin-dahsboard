@@ -10,3 +10,8 @@ export const getOrderById=async(id:string)=>{
     const {data}=await AxiosInstance.get(`${ORDERS_URL}/${id}`);
     return data
 }
+
+export const updateOrderStatus=async(id:string,status:string)=>{
+    const {data}=await AxiosInstance.post(`${ORDERS_URL}/${id}`,{status});
+    return data
+}

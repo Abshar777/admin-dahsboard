@@ -33,6 +33,24 @@ export type IOrder = {
   createdAt: string;
 };
 
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "Placed":
+      return "bg-yellow-500 hover:bg-yellow-500/50 cursor-pointer"
+    case "processing":
+      return "bg-blue-500 hover:bg-blue-500/50 cursor-pointer"
+    case "Shipped":
+      return "bg-purple-500 hover:bg-purple-500/50 cursor-pointer"
+    case "Delivered":
+      return "bg-green-500 hover:bg-green-500/50 cursor-pointer"
+    case "Cancelled":
+      return "bg-red-500 hover:bg-red-500/50 cursor-pointer"
+    default:
+      return "bg-gray-500 hover:bg-gray-500/50 cursor-pointer"
+  }
+}
+
 export const columns: ColumnDef<IOrder>[] = [
   {
     accessorKey: "_id",
@@ -60,21 +78,7 @@ export const columns: ColumnDef<IOrder>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-      <Badge
-        variant={
-          (row.getValue("status") === "Placed"
-            ? "default"
-            : row.getValue("status") === "Shipped"
-            ? "secondary"
-            : row.getValue("status") === "Delivered"
-            ? "outline"
-            : row.getValue("status") === "Returned"
-            ? "warning"
-            : "destructive") as any
-        }
-      >
-        {row.getValue("status")}
-      </Badge>
+      <Badge className={`${getStatusColor(row.original.status)} text-white `}>{row.original.status}</Badge>
     ),
   },
   {
