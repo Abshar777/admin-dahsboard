@@ -1,12 +1,13 @@
 "use client";
 
 import * as React from "react";
-import {
-  ColumnDef,
-} from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "nextjs-toploader/app";
+import { CellAction } from "@/components/global/cell-actions";
+import { useDltBrand } from "@/hooks/useBrand";
+import { useproductDlt } from "@/hooks/useProducts";
 
 export type Product = {
   _id: string;
@@ -84,5 +85,22 @@ export const columns: ColumnDef<Product>[] = [
         {row.getValue("isActive") ? "Active" : "Inactive"}
       </Badge>
     ),
+  },
+  {
+    accessorKey: "actions",
+    header: "Actions",
+    cell: ({ row }) => {
+      const { mutate, isPending, isSuccess } = useproductDlt(row.original._id);
+      const router=useRouter()
+      return (
+        <CellAction
+          updateFn={() => router.push(`/admin/product/${row.original._id}`)}
+          id={row.original._id}
+          deletFn={mutate}
+          dltLoading={isPending}
+          isSuccess={isSuccess}
+        />
+      );
+    },
   },
 ];

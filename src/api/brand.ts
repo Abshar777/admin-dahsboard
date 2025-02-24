@@ -16,3 +16,8 @@ export const editBrand = async (data: { brand: string, isDisabled: boolean, _id:
     const response = await AxiosInstance.patch(`${BRAND_URL}/${data._id}`, data);
     return response.data;
 }
+
+export const dleBrand = async (id:string) => {
+    const response = await AxiosInstance.patch(`${BRAND_URL}/delete/${id}`);
+    return response.data;
+}

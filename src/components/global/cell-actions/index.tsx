@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Edit, Info, MoreHorizontal, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Children, useState } from "react";
+import { Children, useEffect, useState } from "react";
 import { SheetReuse } from "../sheet";
 import { Modal } from "@/components/ui/modal";
 
@@ -19,10 +19,21 @@ interface props {
   updateForm?: React.ReactNode;
   deletFn?: Function;
   info?: React.ReactNode;
+  dltLoading?: boolean;
+  isSuccess?: boolean;
+  updateFn?: Function;
 }
 
-export const CellAction = ({ id, updateForm, deletFn, info }: props) => {
-  const [loading, setLoading] = useState(false);
+export const CellAction = ({
+  id,
+  updateForm,
+  deletFn,
+  info,
+  dltLoading,
+  isSuccess,
+  updateFn,
+}: props) => {
+  const [loading, setLoading] = useState(dltLoading || false);
   const [open, setOpen] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
@@ -30,6 +41,9 @@ export const CellAction = ({ id, updateForm, deletFn, info }: props) => {
   const openSheet = () => setShowEdit(true);
   const showInfoFN = () => setShowInfo(true);
   const closeInfoFN = () => setShowInfo(false);
+  useEffect(() => {
+    if (isSuccess) setOpen(false);
+  }, [isSuccess]);
 
   return (
     <>
@@ -41,14 +55,16 @@ export const CellAction = ({ id, updateForm, deletFn, info }: props) => {
           loading={loading}
         />
       )}
-      <SheetReuse
-        title="Edit "
-        description="this action it will remark the date also"
-        open={showEdit}
-        closeFn={closeSheet}
-      >
-        {updateForm}
-      </SheetReuse>
+      {updateForm && (
+        <SheetReuse
+          title="Edit "
+          description="this action it will remark the date also"
+          open={showEdit}
+          closeFn={closeSheet}
+        >
+          {updateForm}
+        </SheetReuse>
+      )}
 
       {info && (
         <Modal
@@ -76,8 +92,13 @@ export const CellAction = ({ id, updateForm, deletFn, info }: props) => {
               <Info className="mr-2 h-4 w-4" /> Info
             </DropdownMenuItem>
           )}
-          {updateForm && (
-            <DropdownMenuItem onClick={() => openSheet()}>
+          {updateForm||updateFn && (
+            <DropdownMenuItem
+              onClick={() => {
+                openSheet();
+                updateFn && updateFn();
+              }}
+            >
               <Edit className="mr-2 h-4 w-4" /> Update
             </DropdownMenuItem>
           )}

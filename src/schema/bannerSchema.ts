@@ -32,7 +32,8 @@ const bannerSchema = z.object({
                 (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
                 ".jpg, .jpeg, .png and .webp files are accepted."
             ), // Allows image to be optional
-    ]).optional()
+    ]).optional(),
+    page:z.string().min(2, "minimum 2 charecters required")
 });
 
 export default bannerSchema;

@@ -6,6 +6,11 @@ export const getOrders=async()=>{
     return data
 }
 
+export const getServiceOrders=async()=>{
+    const {data}=await AxiosInstance.get(`${ORDERS_URL}/service`);
+    return data
+}
+
 export const getOrderById=async(id:string)=>{
     const {data}=await AxiosInstance.get(`${ORDERS_URL}/${id}`);
     return data

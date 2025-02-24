@@ -37,6 +37,7 @@ import {
 
   import { FaCartShopping } from "react-icons/fa6";
   import { LiaPagerSolid } from "react-icons/lia";
+  import { MdMiscellaneousServices } from "react-icons/md";
   
   export type Icon = LucideIcon;
   
@@ -73,6 +74,7 @@ import {
     order:FaCartShopping ,
     section:LiaPagerSolid,
     laptop: Laptop,
+    service:MdMiscellaneousServices,
     gitHub: ({ ...props }: LucideProps) => (
       <svg
         aria-hidden='true'

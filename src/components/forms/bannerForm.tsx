@@ -20,6 +20,7 @@ import { useEffect } from "react";
 import { useBanner } from "@/hooks/useBanner";
 import { DesktopIcon } from "@radix-ui/react-icons";
 import { LiaDesktopSolid } from "react-icons/lia";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const BannerForm = () => {
   const router = useRouter();
@@ -48,7 +49,7 @@ const BannerForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="grid grid-cols-1 gap-2">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
           <FormField
             control={form.control}
             name="title"
@@ -61,6 +62,35 @@ const BannerForm = () => {
                 <FormMessage />
               </FormItem>
             )}
+          />
+          <FormField
+            control={form.control}
+            name="page"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Pages</FormLabel>
+                  <Select
+                    onValueChange={(e) => e && field.onChange(e)}
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Pages" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {["home","about","service"].map((page: any) => (
+                        <SelectItem key={page} value={page}>
+                          {page}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
           <FormField
             control={form.control}

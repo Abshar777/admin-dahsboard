@@ -83,3 +83,10 @@ export const editProduct=async(data:{
     const response=await AxiosInstance.patch(`${PRODUCTS_URL}/${data._id}`,formData);
     return response.data;
 }
+
+
+
+export const paroductDlt=async(id:string)=>{
+    const response = await AxiosInstance.patch(`${PRODUCTS_URL}/delete/${id}`);
+    return response.data;
+}

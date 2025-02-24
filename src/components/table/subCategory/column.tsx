@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
 import { CellAction } from "@/components/global/cell-actions";
 import SubCategoryForm from "@/components/forms/subCategoryForm";
+import { useSubCategoryDlt } from "@/hooks/useSubCategory";
 
 export type SubcategoryColumn = {
   _id: string;
@@ -14,7 +15,7 @@ export type SubcategoryColumn = {
   };
   subcategory: string;
   isDeleted: {
-    status:boolean
+    status: boolean;
   };
 };
 
@@ -38,7 +39,9 @@ export const columns: ColumnDef<SubcategoryColumn>[] = [
     accessorKey: "isDeleted",
     header: "Status",
     cell: ({ row }) => (
-      <Badge variant={row.original.isDeleted.status ? "destructive" : "default"}>
+      <Badge
+        variant={row.original.isDeleted.status ? "destructive" : "default"}
+      >
         {row.original.isDeleted.status ? "Deleted" : "Active"}
       </Badge>
     ),
@@ -46,8 +49,17 @@ export const columns: ColumnDef<SubcategoryColumn>[] = [
   {
     accessorKey: "actions",
     header: "Actions",
-    cell: ({ row }) => (
-      <CellAction updateForm={<SubCategoryForm id={row.original._id}   />} deletFn={()=>{}}  id={row.original._id}/>
-    ),
+    cell: ({ row }) => {
+      const { mutate, isPending,isSuccess } = useSubCategoryDlt(row.original._id);
+      return (
+        <CellAction
+          updateForm={<SubCategoryForm id={row.original._id} />}
+          deletFn={mutate}
+          dltLoading={isPending}
+          id={row.original._id}
+          isSuccess={isSuccess}
+        />
+      );
+    },
   },
 ];

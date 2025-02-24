@@ -1,6 +1,7 @@
-import { addSubCategory, editSubCategory, getCategoryBySub, getSubCategoryById, getSubCategorys } from "@/api/subCategory";
+import { addSubCategory, editSubCategory, getCategoryBySub, getSubCategoryById, getSubCategorys, subCatgeoryDlt } from "@/api/subCategory";
 import { useQueryData } from "./useQueryData";
 import { useMutationData } from "./useMutation";
+import { toast } from "sonner";
 
 export const useSubCategory = ({enabled=true}:{enabled:boolean,id?:string}) => {
   const { data, isPending } = useQueryData(["subCategory"], getSubCategorys,{
@@ -43,6 +44,23 @@ export const useCetogeryBySubCategory=({id}:{id:string})=>{
   const {data,isPending,refetch}=useQueryData(["categiryBySub"],()=>getCategoryBySub(id));
   return {data, isPending,refetch}
 }
+
+
+export const useSubCategoryDlt = (id:string) => {
+   const {
+    mutate,
+    isPending,
+    isSuccess
+  } = useMutationData(
+    ["subCategoryDlt"],
+    () => subCatgeoryDlt(id),
+    "subCategory",
+    // ()=>toast.success("succefully deleted subcategory")
+  );
+  return { mutate,isPending ,isSuccess};
+};
+
+
 
 
 

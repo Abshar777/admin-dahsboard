@@ -5,6 +5,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import { CellAction } from "@/components/global/cell-actions";
 import OderInfo from "@/components/global/orderInfo";
+import { IndianRupee } from "lucide-react";
 
 export type IOrder = {
   _id: string;
@@ -66,7 +67,7 @@ export const columns: ColumnDef<IOrder>[] = [
     accessorKey: "grandTotal",
     header: "Grand Total",
     cell: ({ row }) => (
-      <div>${Number(row.getValue("grandTotal")).toFixed(2)}</div>
+      <div className="flex items-center "><IndianRupee size={15}/>{Number(row.getValue("grandTotal")).toFixed(2)}</div>
     ),
   },
   {

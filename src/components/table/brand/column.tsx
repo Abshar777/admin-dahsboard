@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { CellAction } from "@/components/global/cell-actions";
 import BrandForm from "@/components/forms/brandForm";
 import BrandEditForm from "@/components/forms/brandEditForm";
+import { useDltBrand } from "@/hooks/useBrand";
 
 export type Cloumn = {
   _id: string;
@@ -49,11 +50,17 @@ export const columns: ColumnDef<Cloumn>[] = [
   {
     accessorKey: "actions",
     header: "Actions",
-    cell: ({ row }) => (
-      <CellAction
-        updateForm={<BrandEditForm data={row.original}/>}
-        id={row.original._id}
-      />
-    ),
+    cell: ({ row }) => {
+      const { mutate, isPending,isSuccess } = useDltBrand(row.original._id);
+      return (
+        <CellAction
+          updateForm={<BrandEditForm data={row.original} />}
+          id={row.original._id}
+          deletFn={mutate}
+          dltLoading={isPending}
+          isSuccess={isSuccess}
+        />
+      );
+    },
   },
 ];

@@ -1,5 +1,5 @@
 "use client"
-import { createBanner, getBannerById, getBanners, updateBanner } from "@/api/banner"
+import { bannerDlt, createBanner, getBannerById, getBanners, updateBanner } from "@/api/banner"
 import { useMutationData } from "./useMutation"
 import { useQueryData } from "./useQueryData";
 
@@ -21,4 +21,11 @@ export const useBannerEdit = (id: string) => {
     return { data, isPending,mutate,isLoading,isSuccess }
 }
 
-
+export const useDltBanner = (id: string) => {
+    const { mutate, isPending,isSuccess } = useMutationData(
+        ["dltBanner"],
+        () => bannerDlt(id),
+        "banner"
+    );
+    return { mutate,isPending,isSuccess}
+}

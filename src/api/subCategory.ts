@@ -31,3 +31,12 @@ export const getCategoryBySub = async (id: string) => {
     const response = await AxiosInstance.get(`${SUBCATEGORY_URL}/category-id?categoryId=${id}`)
     return response.data
 }
+
+
+export const subCatgeoryDlt = async (id: string) => {
+    const response = await AxiosInstance.patch(`${SUBCATEGORY_URL}/delete/${id}`)
+    return response.data
+}
+
+
+

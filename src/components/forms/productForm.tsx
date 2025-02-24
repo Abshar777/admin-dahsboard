@@ -355,7 +355,7 @@ const ProductForm = ({ id }: { id?: string }) => {
             <h1 className="text-2xl flex items-center dark:text-green-200 light:text-green-700 capitalize">
               final Price:
               {finalPrice }
-              SAR
+               INR
             </h1>
           </div>
         </div>
