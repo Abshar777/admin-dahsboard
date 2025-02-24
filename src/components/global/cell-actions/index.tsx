@@ -97,7 +97,7 @@ export const CellAction = ({
             <DropdownMenuItem
               onClick={() => {
                 openSheet();
-                updateFn && updateFn();
+              updateFn && updateFn();
               }}
             >
               <Edit className="mr-2 h-4 w-4" /> Update
