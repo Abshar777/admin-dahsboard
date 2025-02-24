@@ -37,6 +37,7 @@ export const CellAction = ({
   const [open, setOpen] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const sheetState=!!updateForm||!!updateFn
   const closeSheet = () => setShowEdit(false);
   const openSheet = () => setShowEdit(true);
   const showInfoFN = () => setShowInfo(true);
@@ -44,7 +45,7 @@ export const CellAction = ({
   useEffect(() => {
     if (isSuccess) setOpen(false);
   }, [isSuccess]);
-
+  console.log(sheetState)
   return (
     <>
       {deletFn && (
@@ -92,7 +93,7 @@ export const CellAction = ({
               <Info className="mr-2 h-4 w-4" /> Info
             </DropdownMenuItem>
           )}
-          {updateForm||updateFn && (
+          {sheetState && (
             <DropdownMenuItem
               onClick={() => {
                 openSheet();

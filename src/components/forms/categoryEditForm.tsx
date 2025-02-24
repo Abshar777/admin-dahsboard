@@ -172,7 +172,7 @@ const CategoryForm = (props: Props) => {
           />
         </div>
       </form>
-      <SheetClose ref={ref} />
+      {/* <SheetClose ref={ref} /> */}
     </Form>
   );
 };
