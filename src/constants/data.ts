@@ -145,8 +145,15 @@ export const navItems: NavItem[] = [
       },
     ] // No child items
   },
- 
- 
+  {
+    title: 'chat',
+    url: '/admin/chat',
+    icon: 'chat',
+    shortcut: ['p', 'p'],
+    isActive: false,
+   
+  },
+    
 ];
 
 

@@ -38,7 +38,7 @@ import {
   import { FaCartShopping } from "react-icons/fa6";
   import { LiaPagerSolid } from "react-icons/lia";
   import { MdMiscellaneousServices } from "react-icons/md";
-  
+  import { IoIosChatbubbles } from "react-icons/io";
   export type Icon = LucideIcon;
   
   export const Icons = {
@@ -74,6 +74,7 @@ import {
     order:FaCartShopping ,
     section:LiaPagerSolid,
     laptop: Laptop,
+    chat:IoIosChatbubbles,
     service:MdMiscellaneousServices,
     gitHub: ({ ...props }: LucideProps) => (
       <svg
