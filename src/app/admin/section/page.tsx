@@ -8,7 +8,7 @@ import { ChevronRight, ChevronLeft, Plus } from "lucide-react";
 import Link from "next/link";
 import { SearchParams } from "nuqs/server";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useSection } from "@/hooks/useSections";
+import { useScetionDlt, useSection } from "@/hooks/useSections";
 import { IProduct } from "@/types/product";
 import ProductCard from "@/components/global/productCard";
 import { useCarsole } from "@/hooks/useCarousel";
@@ -27,6 +27,7 @@ type pageProps = {
 
 export default function Page(props: pageProps) {
   const { data, isPending } = useSection();
+  const { mutate: dltSection } = useScetionDlt();
   const { emblaRef, scrollNext, scrollPrev } = useCarsole();
 
   return (
@@ -69,13 +70,16 @@ export default function Page(props: pageProps) {
 
                       {
                         <DropdownMenuItem>
-                          <Link href={`/admin/section/${e._id}`} className="flex items-center">
+                          <Link
+                            href={`/admin/section/${e._id}`}
+                            className="flex items-center"
+                          >
                             <Edit className="mr-2 h-4 w-4" /> Update
                           </Link>
                         </DropdownMenuItem>
                       }
                       {
-                        <DropdownMenuItem onClick={() => true}>
+                        <DropdownMenuItem onClick={() => dltSection(e._id)}>
                           <Trash className="mr-2 h-4 w-4" /> Delete
                         </DropdownMenuItem>
                       }
@@ -90,6 +94,7 @@ export default function Page(props: pageProps) {
                         className="p-1  relative flex-shrink-0 lg:min-w-[20%] md:min-w-[50%] max-w-[85%] min-w-[85%]  md:max-w-[50%]  lg:max-w-[20%]"
                       >
                         <ProductCard
+                          name={product.productName}
                           //   key={product._id}
                           className={cn(" active:scale-[.9]")}
                           imageUrl={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${product.images.image1}`}

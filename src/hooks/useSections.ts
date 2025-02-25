@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import sectionSchema from "@/schema/sectionSchema";
 import { z } from "zod";
 import { useMutationData } from "./useMutation";
-import { createSection, getSectionById, getSections, updateSection } from "@/api/section";
+import { createSection, dltSection, getSectionById, getSections, updateSection } from "@/api/section";
 import { toast } from "sonner";
 import { useRouter } from "nextjs-toploader/app";
 import { IProduct } from "@/types/product";
@@ -120,3 +120,15 @@ export const useEditSection = (id: string) => {
 
 
 } 
+
+
+export const useScetionDlt = () => {
+    const { mutate, isPending, isSuccess } = useMutationData(
+        ["dltSction"],
+        (id:string) => dltSection(id),
+        "section",
+        // () => toast.success("catgroy deleted successfully")
+    );
+    return { mutate, isPending, isSuccess };
+};
+

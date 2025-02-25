@@ -45,9 +45,9 @@ const AnimatedButton = ({
       color={color}
       size={size}
       onPress={onClick}
-      className={cn(
+      className={cn(className,
         "w-full font-semibold disabled:cursor-not-allowed disabled:opacity-50 active:scale-[.9] transition-all ease-in duration-[.3s]  px-0 rounded-[.8rem]",
-        className
+        
       )}
       spinner={null}
     >

@@ -30,7 +30,6 @@ const SectionForm = ({ id }: Props) => {
   const hook = id ? useEditSection(id) : useSectionCreation();
   const { products, form, onFormSubmit, isPending, isLoading } = hook;
 
-
   return (
     <Form {...form}>
       <form onSubmit={onFormSubmit} className="space-y-8">
@@ -61,7 +60,10 @@ const SectionForm = ({ id }: Props) => {
                     <div className="overflow-hidden " ref={emblaRef}>
                       <div className="flex w-full">
                         {products.map((product, index) => (
-                          <div key={index} className="p-1 relative  flex-shrink-0 lg:min-w-[20%] md:min-w-[50%] max-w-[85%] min-w-[85%]  md:max-w-[50%]  lg:max-w-[20%]">
+                          <div
+                            key={index}
+                            className="p-1 relative  flex-shrink-0 lg:min-w-[20%] md:min-w-[50%] max-w-[85%] min-w-[85%]  md:max-w-[50%]  lg:max-w-[20%]"
+                          >
                             {field.value.includes(product._id) && (
                               <div className="absolute pointer-events-none mx- z-[999] w-full h-full flex items-center justify-center">
                                 <Checkbox
@@ -70,6 +72,9 @@ const SectionForm = ({ id }: Props) => {
                               </div>
                             )}
                             <ProductCard
+                              price={product.price}
+                              description={product.productDescription}
+                              name={product.productName}
                               onClick={() =>
                                 !field.value.includes(product._id)
                                   ? field.onChange([

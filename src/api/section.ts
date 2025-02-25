@@ -22,3 +22,8 @@ export const getSectionById=async(id:string) => {
     const response = await AxiosInstance.get(`${HOME_PAGE_SECTION}/${id}`);
     return response.data;
 }
+
+export const dltSection=async(id:string) => {
+    const response = await AxiosInstance.delete(`${HOME_PAGE_SECTION}/${id}`);
+    return response.data;
+}

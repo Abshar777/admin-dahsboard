@@ -1,6 +1,6 @@
 "use client";
 
-import {  useState } from "react";
+import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Calendar, IndianRupee, MapPin, Truck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -12,8 +12,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import AnimatedButton from "../globalButton";
 import { useEditOrder } from "@/hooks/useOrder";
 import { toast } from "sonner";
+import { Button } from "@heroui/react";
+import { useCreateChat } from "@/hooks/useChat";
 
 interface OrderDetailsModalProps {
   order: {
@@ -57,11 +60,11 @@ const OrderInfo = ({ order }: OrderDetailsModalProps) => {
   ];
 
   const handleStatusChange = (newStatus: string) => {
-    mutate(newStatus)
+    mutate(newStatus);
     setStatus(newStatus);
   };
 
-  
+  const { mutate: CreateChatFn, isPending: chatPending } = useCreateChat();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -104,7 +107,7 @@ const OrderInfo = ({ order }: OrderDetailsModalProps) => {
           <p className="text-lg font-semibold">{order.product.productName}</p>
           <p className="text-gray-600 flex items-center gap-1">
             {order.product.price}
-             INR 
+            INR
           </p>
           <p>
             <strong>Quantity:</strong> {order.product.qty}
@@ -115,7 +118,11 @@ const OrderInfo = ({ order }: OrderDetailsModalProps) => {
           </p>
           <div className="flex items-center gap-2 mt-2">
             <Truck size={16} />
-            <Select disabled={isPending} onValueChange={handleStatusChange} defaultValue={status}>
+            <Select
+              disabled={isPending}
+              onValueChange={handleStatusChange}
+              defaultValue={status}
+            >
               <SelectTrigger className="w-[130px]">
                 <SelectValue
                   placeholder={
@@ -141,21 +148,35 @@ const OrderInfo = ({ order }: OrderDetailsModalProps) => {
         </div>
       </div>
 
-      <div className="flex mb-2 mt-2 items-center gap-4 p-4 bg-muted/20 rounded-lg">
-        <Avatar>
-          <AvatarImage
-            src={order.user?.img || "https://via.placeholder.com/50"}
-            alt={order.user.username}
-          />
-          <AvatarFallback>{order.user.username.charAt(0)}</AvatarFallback>
-        </Avatar>
-        <div>
-          <p className="font-semibold">{order.user.username}</p>
-          <p className="text-gray-600">{order.user.email}</p>
-          {order.user.phone && (
-            <p className="text-gray-600">📞 {order.user.phone}</p>
-          )}
+      <div className="flex mb-2 mt-2 items-center justify-between gap-4 p-4 bg-muted/20 rounded-lg">
+        <div className="flex gap-4">
+          <Avatar>
+            <AvatarImage
+              src={order.user?.img || "https://via.placeholder.com/50"}
+              alt={order.user.username}
+            />
+            <AvatarFallback>{order.user.username.charAt(0)}</AvatarFallback>
+          </Avatar>
+          <div>
+            <p className="font-semibold">{order.user.username}</p>
+            <p className="text-gray-600">{order.user.email}</p>
+            {order.user.phone && (
+              <p className="text-gray-600">📞 {order.user.phone}</p>
+            )}
+          </div>
         </div>
+        <AnimatedButton
+          size={"sm"}
+          type="button"
+          text="message"
+          loadingText=""
+          className="px-0"
+          onClick={() => {
+            CreateChatFn(order._id);
+          }}
+          isLoading={chatPending}
+          disabled={chatPending}
+        />
       </div>
 
       <div className="p-4 mb-2 bg-muted/20 rounded-lg">
@@ -168,7 +189,7 @@ const OrderInfo = ({ order }: OrderDetailsModalProps) => {
       </div>
 
       <p className="font-semibold text-lg flex items-center gap-1">
-        Grand Total: {order.grandTotal}  INR
+        Grand Total: {order.grandTotal} INR
       </p>
     </ScrollArea>
   );
