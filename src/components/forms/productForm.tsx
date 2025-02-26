@@ -88,7 +88,6 @@ const ProductForm = ({ id }: { id?: string }) => {
 
   useEffect(() => {
     if (id && data) {
-      console.log((data as any)?.subcategories?.[0]);
       form.reset({
         ...(data as any),
         category: (data as any)?.category?._id,
@@ -98,15 +97,16 @@ const ProductForm = ({ id }: { id?: string }) => {
         serialNumber: Number((data as any)?.serialNumber) || 0,
         images: [],
       });
+      setselectedCat((data as any)?.category?._id)
     }
-  }, [id, data, form]);
+  }, [id, data]);
 
   const { data: subCategory, refetch } = useCetogeryBySubCategory({
     id: selectedCat,
   });
   useEffect(() => {
     refetch();
-  }, [selectedCat,]);
+  }, [selectedCat]);
 
   useEffect(() => {
     if (subCategory) setSubCategorys(subCategory);
@@ -164,32 +164,36 @@ const ProductForm = ({ id }: { id?: string }) => {
           <FormField
             control={form.control}
             name="category"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Category</FormLabel>
-                <Select
-                  onValueChange={(e) => {
-                    setselectedCat(e);
-                    field.onChange(e);
-                  }}
-                  value={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder={field.value} />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {categories.map((cat: ICategory) => (
-                      <SelectItem key={cat._id} value={cat._id}>
-                        {cat.category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <Select
+                    onValueChange={(e) => {
+                      e && setselectedCat(e);
+                      e && field.onChange(e);
+                    }}
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={field.value || "please select"}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categories.map((cat: ICategory) => (
+                        <SelectItem key={cat._id} value={cat._id}>
+                          {cat.category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
           <FormField
             control={form.control}
@@ -223,29 +227,38 @@ const ProductForm = ({ id }: { id?: string }) => {
           <FormField
             control={form.control}
             name="brand"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Brand</FormLabel>
-                <Select
-                  onValueChange={(e) => e && field.onChange(e)}
-                  value={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select brand" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {brands.map((brand) => (
-                      <SelectItem key={brand._id} value={brand._id}>
-                        {brand.brand}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={({ field }) => {
+              console.log(field.value, "filed");
+              return (
+                <FormItem>
+                  <FormLabel>Brand</FormLabel>
+                  <Select
+                    onValueChange={(e) => {
+                      console.log(e)
+                      e && console.log(e,"ajabajbaj");
+                      e && field.onChange(e);
+                    }}
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={field.value || "please select brand"}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {brands.map((brand) => (
+                        <SelectItem key={brand._id} value={brand._id}>
+                          {brand.brand}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
           <FormField
             control={form.control}
@@ -354,8 +367,8 @@ const ProductForm = ({ id }: { id?: string }) => {
           <div className="flex items-center justify-end mt-10">
             <h1 className="text-2xl flex items-center dark:text-green-200 light:text-green-700 capitalize">
               final Price:
-              {finalPrice }
-               INR
+              {finalPrice}
+              INR
             </h1>
           </div>
         </div>

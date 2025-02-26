@@ -11,7 +11,7 @@ export default function ChatApp() {
  
 
   return (
-    <div className="dark flex border-t  h-full bg-background">
+    <div className=" flex border-t  h-full bg-background">
       <div className="grid flex-1 grid-cols-[280px_1fr]">
         {/* Sidebar */}
         <div className="flex h-full flex-col border-r border-border ">
@@ -21,7 +21,7 @@ export default function ChatApp() {
             </div>
             <div className="relative">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
+            <Input
                 placeholder="Search chats..."
                 className="pl-8 h-9 bg-muted"
               />
