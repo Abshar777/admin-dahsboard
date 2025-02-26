@@ -22,6 +22,7 @@ interface OrderDetailsModalProps {
   order: {
     _id: string;
     user: {
+      _id:string;
       username: string;
       email: string;
       phone?: string;
@@ -172,7 +173,7 @@ const OrderInfo = ({ order }: OrderDetailsModalProps) => {
           loadingText=""
           className="px-0"
           onClick={() => {
-            CreateChatFn(order._id);
+            CreateChatFn(order.user._id);
           }}
           isLoading={chatPending}
           disabled={chatPending}

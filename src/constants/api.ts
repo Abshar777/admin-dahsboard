@@ -14,4 +14,5 @@ export const FEATURED_URL = '/api/featured'
 export const RECOMMENDED_URL = '/api/recommended'
 export const POPULAR_PRODUCTS_URL = '/api/popularproduct'
 export const HOME_PAGE_SECTION = '/api/sections'
-export const CHAT_API = '/api/chat'
+export const CHAT_API = '/api/chat';
+export const MSG_API = '/api/message';

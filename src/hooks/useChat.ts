@@ -1,7 +1,7 @@
 "use client"
-import { createChat,getChatByUser } from "@/api/chat"
+import { createChat, getChatByUser } from "@/api/chat"
 import { useMutationData } from "./useMutation"
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useQueryData } from "./useQueryData"
 
 export const useCreateChat = () => {
@@ -16,10 +16,10 @@ export const useCreateChat = () => {
 }
 
 
-// export const useGetChats=()=>{
-    
-//     const { data, isPending } = useQueryData(["chats"],()=>getChatByUser(id), );
-//     // const { mutate, isPending: creationPending, isSuccess } = useMutationData(["brand"], createBrand)
-//     return { data, isPending }
+export const useGetChats = () => {
+    const searchparams = useSearchParams()
+    const chatId = searchparams.get("id");
+    const { data, isPending } = useQueryData(["chats"], () => getChatByUser(),);
+    return { data, isPending,chatId }
 
-// }
+}

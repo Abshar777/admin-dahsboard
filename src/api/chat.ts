@@ -6,7 +6,7 @@ export const createChat = async (id: string) => {
     return res.data
 }
 
-export const getChatByUser = async (id: string) => {
-    const res = await AxiosInstance.post(`${CHAT_API}/${id}`, { userId:id });
+export const getChatByUser = async () => {
+    const res = await AxiosInstance.get(`${CHAT_API}/`);
     return res.data
 }

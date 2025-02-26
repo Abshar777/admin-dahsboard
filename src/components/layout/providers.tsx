@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import ThemeProvider from "./ThemeToggle/theme-provider";
-import { SessionProvider, SessionProviderProps } from "next-auth/react";
+import { SessionProvider, SessionProviderProps, useSession } from "next-auth/react";
 import ReactQueryProvider from "../providers/react-query";
-import {HeroUIProvider} from '@heroui/react'
+import { HeroUIProvider } from "@heroui/react";
 export default function Providers({
   session,
   children,
@@ -11,15 +11,14 @@ export default function Providers({
   session: SessionProviderProps["session"];
   children: React.ReactNode;
 }) {
+
   return (
     <>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
         <SessionProvider session={session}>
           <ReactQueryProvider>
-          <HeroUIProvider>
-            {children}
-            </HeroUIProvider>
-            </ReactQueryProvider>
+            <HeroUIProvider>{children}</HeroUIProvider>
+          </ReactQueryProvider>
         </SessionProvider>
       </ThemeProvider>
     </>
