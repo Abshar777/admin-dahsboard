@@ -1,5 +1,5 @@
 import { PRODUCTS_URL } from "@/constants/api";
-import { Product } from "@/components/table/product/column"; 
+import { Product } from "@/components/table/product/column";
 
 import AxiosInstance from "@/utils/axios";
 
@@ -38,15 +38,30 @@ export const createProduct = async (data: {
     discountInPercentage: string,
     inStock: string,
     category: string,
-    images: File[]
+    images: File[];
+    color: { hex: string, titile: string, image: FileList }[]
 }) => {
     const formData = new FormData();
+    const colorImg: File[] = [];
+    for (const color of data.color) {
+        const fileArray = Array.from(color.image);
+        if (fileArray.length > 0) {
+            colorImg.push(fileArray[0]);
+        }
+    }
+
+
     for (const [key, value] of Object.entries(data)) {
         formData.append(key, JSON.stringify(value));
     }
     for (let i = 0; i < data.images.length; i++) {
+        console.log(data.images[i])
         formData.append(`image${i + 1}`, data.images[i]);
     }
+    colorImg.forEach((file, index) => {
+        formData.append(`colorImage${index + 1}`, file);
+    });
+
     const response = await AxiosInstance.post(`${PRODUCTS_URL}/`, formData);
     return response.data
 }
@@ -59,8 +74,8 @@ export const getProductByID = async ({ id }: { id?: string }) => {
 }
 
 
-export const editProduct=async(data:{
-    _id:string,
+export const editProduct = async (data: {
+    _id: string,
     productName: string,
     productDescription: string,
     barcode: string,
@@ -71,22 +86,34 @@ export const editProduct=async(data:{
     discountInPercentage: string,
     inStock: string,
     category: string,
+    color: { hex: string, titile: string, image: FileList }[]
     images: File[]
-})=>{
+}) => {
     const formData = new FormData();
+    const colorImg: File[] = [];
+    for (const color of data.color) {
+        const fileArray = Array.from(color.image);
+        if (fileArray.length > 0) {
+            colorImg.push(fileArray[0]);
+        }
+    }
+    colorImg.forEach((file, index) => {
+        formData.append(`colorImage${index + 1}`, file);
+    });
+
     for (const [key, value] of Object.entries(data)) {
         formData.append(key, JSON.stringify(value));
     }
     for (let i = 0; i < data.images.length; i++) {
         formData.append(`image${i + 1}`, data.images[i]);
     }
-    const response=await AxiosInstance.patch(`${PRODUCTS_URL}/${data._id}`,formData);
+    const response = await AxiosInstance.patch(`${PRODUCTS_URL}/${data._id}`, formData);
     return response.data;
 }
 
 
 
-export const paroductDlt=async(id:string)=>{
+export const paroductDlt = async (id: string) => {
     const response = await AxiosInstance.patch(`${PRODUCTS_URL}/delete/${id}`);
     return response.data;
 }

@@ -25,13 +25,15 @@ import productSchema from "@/schema/productSchema";
 import { IBrand } from "@/types/IBrand";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import AnimatedButton from "../global/globalButton";
 import { useRouter } from "nextjs-toploader/app";
 import { useCetogeryBySubCategory } from "@/hooks/useSubCategory";
-import { IndianRupee } from "lucide-react";
+import { IndianRupee, Plus, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const defaultValues = {
   images: [],
@@ -46,9 +48,11 @@ const defaultValues = {
   discountInPercentage: 0,
   inStock: 0,
   subcategories: undefined,
+  color: [{ hex: "#000000", title: "Black", image: undefined }],
 };
 
 const ProductForm = ({ id }: { id?: string }) => {
+  const [img, setImg] = useState<string[]>([]);
   const router = useRouter();
   const [selectedCat, setselectedCat] = useState("");
   const { data: category } = useCategory();
@@ -70,6 +74,24 @@ const ProductForm = ({ id }: { id?: string }) => {
     resolver: zodResolver(productSchema),
     defaultValues,
   });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "color",
+  });
+  const colorImg = useFieldArray({
+    control: form.control,
+    name: "colorImg",
+  });
+
+  const addColor = () => {
+    append({ hex: "#000000", title: "Black" });
+    colorImg.append(null);
+  };
+  const deleteColor = (index: number) => {
+    remove(index);
+    colorImg.remove(index);
+  };
 
   useEffect(() => {
     if (category) {
@@ -96,8 +118,16 @@ const ProductForm = ({ id }: { id?: string }) => {
         modelNumber: Number((data as any)?.modelNumber) || 0,
         serialNumber: Number((data as any)?.serialNumber) || 0,
         images: [],
+        color: (data as any)?.colors || [
+          { hex: "#000000", title: "Black" },
+        ],
       });
-      setselectedCat((data as any)?.category?._id)
+      setselectedCat((data as any)?.category?._id);
+    }
+    if (data && (data as any)?.colors) {
+      const colors = (data as any)?.colors;
+      const colorImg = colors.map((color: any) => color.image);
+      setImg(colorImg);
     }
   }, [id, data]);
 
@@ -119,6 +149,7 @@ const ProductForm = ({ id }: { id?: string }) => {
   const price = form.watch("price") || 0;
   const discountInPercentage = form.watch("discountInPercentage") || 0;
   const finalPrice = price - price * (discountInPercentage / 100);
+
   return (
     <Form {...form}>
       <form
@@ -228,14 +259,11 @@ const ProductForm = ({ id }: { id?: string }) => {
             control={form.control}
             name="brand"
             render={({ field }) => {
-              console.log(field.value, "filed");
               return (
                 <FormItem>
                   <FormLabel>Brand</FormLabel>
                   <Select
                     onValueChange={(e) => {
-                      console.log(e)
-                      e && console.log(e,"ajabajbaj");
                       e && field.onChange(e);
                     }}
                     value={field.value}
@@ -363,15 +391,147 @@ const ProductForm = ({ id }: { id?: string }) => {
               </FormItem>
             )}
           />
-
-          <div className="flex items-center justify-end mt-10">
-            <h1 className="text-2xl flex items-center dark:text-green-200 light:text-green-700 capitalize">
-              final Price:
-              {finalPrice}
-              INR
-            </h1>
-          </div>
         </div>
+
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Product Colors</h2>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                fields.length < 3 ? addColor() : toast.error("max 3 colors")
+              }
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Color
+            </Button>
+          </div>
+          {/* here is the color component want to came  */}
+          <div className="grid grid-cols-3 gap-2">
+            {fields.map((field, index) => (
+              <div  key={index} className="flex border p-4 rounded-xl flex-col gap-2">
+                <FormField
+                  control={form.control}
+                  name={`color.${index}.image`}
+                  render={({ field }) => {
+                    // console.log(field.value, "render");
+                    return (
+                      <div className="space-y-6 w-full">
+                        <FormItem className="w-full">
+                          <FormLabel>Images</FormLabel>
+                          <FormControl className="">
+                            <div className="  w-full   gap-4">
+                              <label
+                                className="w-full h-[8rem] rounded-xl overflow-hidden"
+                                htmlFor={index + "img"}
+                              >
+                                {img[index] ? (
+                                  <img
+                                    className="w-full h-[20rem] rounded-xl  object-cover"
+                                    src={
+                                      (img[index] as string).startsWith("blob")
+                                        ? (img[index] as string)
+                                        : `${process.env.NEXT_PUBLIC_BACKEND_URL}${field.value}`
+                                    }
+                                  />
+                                ) : (
+                                  <div
+                                    className={cn(
+                                      "group relative grid h-52 w-full cursor-pointer place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-2.5 text-center transition hover:bg-muted/25",
+                                      "ring-offset-background text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                    )}
+                                  >
+                                    upload
+                                  </div>
+                                )}
+                              </label>
+                              <input
+                                id={index + "img"}
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                hidden
+                                multiple={false}
+                                onChange={(e) => {
+                                  if (
+                                    e.target.files &&
+                                    e.target.files.length > 0
+                                  ) {
+                                    const file = e.target.files[0];
+                                    const newImg = [...img]; // Create a new array
+                                    newImg[index] = URL.createObjectURL(file);
+                                    console.log(img, newImg, "new Img", index);
+                                    setImg(newImg); // Update the state properly
+
+                                    field.onChange(e.target.files); // Ensure React Hook Form updates the value
+                                  }
+                                }}
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      </div>
+                    );
+                  }}
+                />
+                <div
+                  key={field.id}
+                  className="grid grid-cols-1  gap-4 p-4  rounded-lg md:grid-cols-2"
+                >
+                  <FormField
+                    control={form.control}
+                    name={`color.${index}.hex`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Color Hex</FormLabel>
+                        <FormControl className="w-full grid grid-cols-3  ">
+                          <Input
+                            className="rounded-full   border-0"
+                            type="color"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name={`color.${index}.title`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Color Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g., Royal Blue" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="flex items-center w-full justify-center">
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      className="mt-2"
+                      onClick={() => deleteColor(index)}
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Remove Color
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/*end  */}
+        </div>
+
         <FormField
           control={form.control}
           name="productDescription"
@@ -389,9 +549,16 @@ const ProductForm = ({ id }: { id?: string }) => {
             </FormItem>
           )}
         />
+
+        <div className="flex items-center justify-end mt-10">
+          <h1 className="text-2xl flex items-center dark:text-green-200 light:text-green-700 capitalize">
+            final Price: {finalPrice} INR
+          </h1>
+        </div>
+
         <AnimatedButton
           type="submit"
-          text={id ? "edite product" : "add product"}
+          text={id ? "edit product" : "add product"}
           isLoading={editPending || isLoading}
         />
       </form>

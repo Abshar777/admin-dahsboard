@@ -8,6 +8,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { CellAction } from "@/components/global/cell-actions";
 import { useDltBrand } from "@/hooks/useBrand";
 import { useproductDlt } from "@/hooks/useProducts";
+import { IndianRupee } from "lucide-react";
 
 export type Product = {
   _id: string;
@@ -60,7 +61,7 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: "price",
     header: "Price",
-    cell: ({ row }) => <div>${Number(row.getValue("price")).toFixed(2)}</div>,
+    cell: ({ row }) => <div className="flex items-center"><IndianRupee size={13}/>{Number(row.getValue("price")).toFixed(2)}</div>,
   },
   {
     accessorKey: "discountInPercentage",
