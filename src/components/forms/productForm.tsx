@@ -79,18 +79,19 @@ const ProductForm = ({ id }: { id?: string }) => {
     control: form.control,
     name: "color",
   });
-  const colorImg = useFieldArray({
+  const features = useFieldArray({
     control: form.control,
-    name: "colorImg",
+    name: "features",
   });
+
+  const addFeatures = () => features.append({ key: "", value: "" });
+  const removeFeatures = (index: number) => features.remove(index);
 
   const addColor = () => {
     append({ hex: "#000000", title: "Black" });
-    colorImg.append(null);
   };
   const deleteColor = (index: number) => {
     remove(index);
-    colorImg.remove(index);
   };
 
   useEffect(() => {
@@ -118,9 +119,8 @@ const ProductForm = ({ id }: { id?: string }) => {
         modelNumber: Number((data as any)?.modelNumber) || 0,
         serialNumber: Number((data as any)?.serialNumber) || 0,
         images: [],
-        color: (data as any)?.colors || [
-          { hex: "#000000", title: "Black" },
-        ],
+        color: (data as any)?.colors || [{ hex: "#000000", title: "Black" }],
+        features: (data as any)?.features || [],
       });
       setselectedCat((data as any)?.category?._id);
     }
@@ -409,9 +409,12 @@ const ProductForm = ({ id }: { id?: string }) => {
             </Button>
           </div>
           {/* here is the color component want to came  */}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-4 gap-2">
             {fields.map((field, index) => (
-              <div  key={index} className="flex border p-4 rounded-xl flex-col gap-2">
+              <div
+                key={index}
+                className="flex border p-4 rounded-xl flex-col gap-2"
+              >
                 <FormField
                   control={form.control}
                   name={`color.${index}.image`}
@@ -424,12 +427,12 @@ const ProductForm = ({ id }: { id?: string }) => {
                           <FormControl className="">
                             <div className="  w-full   gap-4">
                               <label
-                                className="w-full h-[8rem] rounded-xl overflow-hidden"
+                                className="w-full h-[4rem] rounded-xl overflow-hidden"
                                 htmlFor={index + "img"}
                               >
                                 {img[index] ? (
                                   <img
-                                    className="w-full h-[20rem] rounded-xl  object-cover"
+                                    className="w-full h-[15rem] rounded-xl  object-cover"
                                     src={
                                       (img[index] as string).startsWith("blob")
                                         ? (img[index] as string)
@@ -439,7 +442,7 @@ const ProductForm = ({ id }: { id?: string }) => {
                                 ) : (
                                   <div
                                     className={cn(
-                                      "group relative grid h-52 w-full cursor-pointer place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-2.5 text-center transition hover:bg-muted/25",
+                                      "group relative grid h-[15rem] w-full cursor-pointer place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-2.5 text-center transition hover:bg-muted/25",
                                       "ring-offset-background text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                                     )}
                                   >
@@ -512,19 +515,81 @@ const ProductForm = ({ id }: { id?: string }) => {
                       </FormItem>
                     )}
                   />
+                </div>
 
-                  <div className="flex items-center w-full justify-center">
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      className="mt-2"
-                      onClick={() => deleteColor(index)}
-                    >
-                      <Trash2 className="w-4 h-4 mr-2" />
-                      Remove Color
-                    </Button>
-                  </div>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  className="mt-2"
+                  onClick={() => deleteColor(index)}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Remove Color
+                </Button>
+              </div>
+            ))}
+          </div>
+          {/*end  */}
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Product Features</h2>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() =>
+                features.fields.length < 5
+                  ? addFeatures()
+                  : toast.error("max 5 Features")
+              }
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add Features
+            </Button>
+          </div>
+          {/* here is the color component want to came  */}
+          <div className="grid  grid-cols-1 gap-4">
+            {features.fields.map((field, i) => (
+              <div key={field.id} className="flex items-center  gap-2">
+                <div className="grid flex-1 grid-cols-2 gap-2">
+                  <FormField
+                    control={form.control}
+                    name={`features.${i}.key`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Key</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Key" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`features.${i}.value`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Value</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Value" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="h-full relative">
+                  <Button
+                    onClick={() => removeFeatures(i)}
+                    type="button"
+                    className="translate-y-8"
+                  >
+                    X
+                  </Button>
                 </div>
               </div>
             ))}

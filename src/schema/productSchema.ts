@@ -31,6 +31,11 @@ const colorSchema = z.object({
 });
 
 
+const featuresSchema = z.object({
+  key: z.string().min(2, "At least 2 characters required"),
+  value: z.string().min(2, "At least 2 characters required")
+})
+
 const productSchema = z.object({
   images: z
     .any()
@@ -58,7 +63,8 @@ const productSchema = z.object({
   serialNumber: z.number().optional(),
   discountInPercentage: z.number().max(80, "maximum 80% discount"),
   inStock: z.number().min(0, "Number must be greater than zero"),
-  color: z.array(colorSchema)
+  color: z.array(colorSchema),
+  features: z.array(featuresSchema),
 });
 
 export default productSchema;
