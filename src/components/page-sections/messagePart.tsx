@@ -10,6 +10,7 @@ import { useGetMsg } from "@/hooks/useMsg";
 import Loader from "../global/loader";
 import { Skeleton } from "../ui/skeleton";
 import { MsgInput } from "./msgInput";
+import ChatLotiie from "../animation/chatLoadingAnimation";
 
 interface Props {}
 
@@ -32,19 +33,23 @@ const MessagePart = (props: Props) => {
   const { data, isPending, name } = useGetMsg();
   return (
     <main className="flex h-full flex-col">
-      <header className="border-b border-border p-4">
-        {data ? (
-          <div className="flex items-center gap-2">
-            <div className="h-2 w-2 rounded-full bg-primary"></div>
-            <h1 className="text-lg font-semibold text-foreground"># {name}</h1>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2">
-            <Skeleton className="w-[2rem] h-[2rem] bg-muted-foreground/10 rounded-full " />
-            <Skeleton className="rounded-lg w-1/2 h-5 bg-muted-foreground/10" />
-          </div>
-        )}
-      </header>
+      {data && (data as any).messages && !!(data as any).messages.length && (
+        <header className="border-b border-border p-4">
+          {data ? (
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-primary"></div>
+              <h1 className="text-lg font-semibold text-foreground">
+                # {name}
+              </h1>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Skeleton className="w-[2rem] h-[2rem] bg-muted-foreground/10 rounded-full " />
+              <Skeleton className="rounded-lg w-1/2 h-5 bg-muted-foreground/10" />
+            </div>
+          )}
+        </header>
+      )}
 
       {data && (data as any).messages && (
         <ScrollArea className="flex-1  p-4">
@@ -69,8 +74,8 @@ const MessagePart = (props: Props) => {
                 </div>
               ))
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <h1>no messages are here</h1>
+              <div className="w-full  h-screen -mt-[2rem] flex items-center justify-center">
+                <ChatLotiie />
               </div>
             )}
           </div>
@@ -81,6 +86,7 @@ const MessagePart = (props: Props) => {
           <Loader />
         </div>
       )}
+
       <MsgInput />
     </main>
   );

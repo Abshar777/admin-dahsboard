@@ -6,7 +6,8 @@ import { Send } from "lucide-react";
 import { useSendMsg } from "@/hooks/useMsg";
 
 export const MsgInput = () => {
-  const { input, setInput, isPending, formSubmit } = useSendMsg();
+  const { input, setInput, isPending, formSubmit, chatId } = useSendMsg();
+  if (!chatId) return null;
   return (
     <div className="border-t border-border p-4">
       <form onSubmit={formSubmit} className="flex gap-2">

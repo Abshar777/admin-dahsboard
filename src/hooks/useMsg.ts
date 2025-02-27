@@ -22,7 +22,7 @@ export const useSendMsg = () => {
         mutate({ sender: "admin", text: input });
     }
 
-    return { mutate, isPending, input, setInput, formSubmit }
+    return { mutate, isPending, input, setInput, formSubmit,chatId }
 }
 
 
@@ -42,5 +42,5 @@ export const useGetMsg = () => {
         refetch()
     },[chatId])
 
-    return { data, isPending,name }
+    return { data, isPending,name,chatId }
 }

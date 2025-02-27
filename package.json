@@ -55,6 +55,7 @@
     "input-otp": "^1.4.2",
     "kbar": "^0.1.0-beta.45",
     "ldrs": "^1.0.2",
+    "lottie-react": "^2.4.1",
     "lucide-react": "^0.475.0",
     "match-sorter": "^8.0.0",
     "next": "15.1.7",
