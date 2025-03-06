@@ -32,7 +32,7 @@ const SectionForm = ({ id }: Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onFormSubmit} className="space-y-8 md:max-w-[75vw] max-w-[85vw]">
+      <form suppressHydrationWarning onSubmit={onFormSubmit} className="space-y-8 md:max-w-[75vw] max-w-[85vw]">
         <div className="grid grid-cols-1">
           <FormField
             control={form.control}
@@ -53,7 +53,7 @@ const SectionForm = ({ id }: Props) => {
           name="products"
           render={({ field }) => (
             <FormItem>
-              
+
               <FormLabel className="font-semibold"> Products</FormLabel>
               <FormControl>
                 {!isLoading ? (
