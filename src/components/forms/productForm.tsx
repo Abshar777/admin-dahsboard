@@ -188,7 +188,7 @@ const ProductForm = ({ id }: { id?: string }) => {
             <FormItem className="w-full">
               <FormLabel>Images</FormLabel>
               <FormControl>
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {feildName.map((item) => (
                     <div key={item} className="  w-full   gap-4">
                       <label
