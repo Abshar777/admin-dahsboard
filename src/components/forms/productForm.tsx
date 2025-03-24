@@ -1,6 +1,4 @@
 "use client";
-
-import { FileUploader } from "@/components/global/fileUploader";
 import {
   Form,
   FormControl,
@@ -181,6 +179,7 @@ const ProductForm = ({ id }: { id?: string }) => {
         })}
         className="space-y-8"
       >
+
         <FormField
           control={form.control}
           name="images"

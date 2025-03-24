@@ -17,9 +17,6 @@ import { Checkbox } from "../ui/checkbox";
 import { useEditSection, useSectionCreation } from "@/hooks/useSections";
 import Loader from "../global/loader";
 import { useCarsole } from "@/hooks/useCarousel";
-import { Product } from "../../types";
-import { useEffect } from "react";
-import { IProduct } from "@/types/product";
 
 interface Props {
   id?: string;
