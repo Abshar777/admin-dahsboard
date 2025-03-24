@@ -37,16 +37,26 @@ const featuresSchema = z.object({
 })
 
 const productSchema = z.object({
-  images: z
-    .any()
-    .refine((files) => files?.length >= 1 && files?.length <= 4, "You must upload between 1 and 4 images.")
+  images: z.optional(z.any())
     .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
-    )
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
+      (value) => {
+
+        if (value) {
+          if (!(value?.length >= 1 && value?.length <= 4)) return false;
+          if (typeof value[0] === "string") {
+            return true;
+          }
+          if (value[0].size <= MAX_FILE_SIZE &&
+            ACCEPTED_IMAGE_TYPES.includes(value[0].type)) {
+            return true;
+          }
+
+        }
+        return false;
+      },
+      {
+        message: "Please upload a valid image (jpg, jpeg, png, webp) with max size 5MB.",
+      }
     ),
   productName: z.string().min(2, {
     message: "Product name must be at least 2 characters.",

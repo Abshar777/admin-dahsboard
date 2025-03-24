@@ -33,7 +33,7 @@ export const columns: ColumnDef<Product>[] = [
           onClick={() => router.push(`/admin/product/${row.original._id}`)}
         >
           <AvatarImage
-            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${row.original.images.image1}`}
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${row.original?.images?.image1}`}
             alt={row.original.productName}
           />
           <AvatarFallback>

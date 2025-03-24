@@ -29,41 +29,16 @@ import { Switch } from "../ui/switch";
 import AnimatedButton from "../global/globalButton";
 import { useCategory } from "@/hooks/useCategory";
 import { useRouter } from "nextjs-toploader/app";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface Props {}
 
-const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
 
-const formSchema = z.object({
-  image: z
-    .any()
-    .refine((files) => files?.length == 1, "Image is required.")
-    .refine(
-      (files) => files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
-    )
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      ".jpg, .jpeg, .png and .webp files are accepted."
-    ),
-  name: z.string().min(2, {
-    message: "Product name must be at least 2 characters.",
-  }),
-  category: z.string(),
-  price: z.number(),
-  description: z.string().min(10, {
-    message: "Description must be at least 10 characters.",
-  }),
-});
+
 
 const CategoryForm = (props: Props) => {
+  const [img, setImg] = useState<string | null>(null);
   const router = useRouter();
   const initialData: Record<string, any> | null = null;
   const defaultValues = {
@@ -92,31 +67,64 @@ const CategoryForm = (props: Props) => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <div className="grid md:grid-cols-2 grid-cols-1">
+        <div className="grid md:grid-cols-2 grid-cols-1">
           <FormField
             control={form.control}
             name="img"
             render={({ field }) => (
-              <div className="space-y-6">
+              <div className="space-y-6 w-full">
                 <FormItem className="w-full">
                   <FormLabel>Images</FormLabel>
-                  <FormControl>
-                    <FileUploader
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      maxFiles={1}
-                      maxSize={1 * 1024 * 1024}
-                      // disabled={loading}
-                      // progresses={progresses}
-                      // pass the onUpload function here for direct upload
-                      // onUpload={uploadFiles}
-                      // disabled={isUploading}
-                    />
+                  <FormControl className="">
+                    <div className="  w-full   gap-4">
+                      <label
+                        className="w-full h-[8rem] rounded-xl overflow-hidden"
+                        htmlFor="img"
+                      >
+                        {img ? (
+                          <img
+                            className="w-full h-full rounded-xl  object-cover"
+                            src={
+                              (img as string).startsWith("blob")
+                                ? (img as string)
+                                : `${process.env.NEXT_PUBLIC_BACKEND_URL}${field.value}`
+                            }
+                          />
+                        ) : (
+                          <div
+                            className={cn(
+                              "group relative grid h-52 w-full cursor-pointer place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-2.5 text-center transition hover:bg-muted/25",
+                              "ring-offset-background text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                            )}
+                          >
+                            upload
+                          </div>
+                        )}
+                      </label>
+                      <input
+                        id="img"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        hidden
+                        multiple={false}
+                        onChange={(e) => {
+                          console.log((e.target.files as FileList)[0]);
+                          field.onChange(e.target.files as FileList);
+                          setImg(
+                            URL.createObjectURL((e.target.files as FileList)[0])
+                          );
+                        }}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               </div>
             )}
           />
+        </div>
+
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

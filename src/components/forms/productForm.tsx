@@ -53,6 +53,13 @@ const defaultValues = {
 
 const ProductForm = ({ id }: { id?: string }) => {
   const [img, setImg] = useState<string[]>([]);
+  const [productImg, setProductImg] = useState({
+    image1: null,
+    image2: null,
+    image3: null,
+    image4: null,
+  });
+  const feildName = ["image1", "image2", "image3", "image4"];
   const router = useRouter();
   const [selectedCat, setselectedCat] = useState("");
   const { data: category } = useCategory();
@@ -111,6 +118,20 @@ const ProductForm = ({ id }: { id?: string }) => {
 
   useEffect(() => {
     if (id && data) {
+      let imagesArray = [];
+      for (const key in (data as any)?.images) {
+        if ((data as any)?.images[key]) {
+          imagesArray.push((data as any)?.images[key]);
+        }
+      }
+
+      setProductImg({
+        image1: imagesArray[0],
+        image2: imagesArray[1],
+        image3: imagesArray[2],
+        image4: imagesArray[3],
+      });
+      console.log(imagesArray, "imagesArray");
       form.reset({
         ...(data as any),
         category: (data as any)?.category?._id,
@@ -118,7 +139,7 @@ const ProductForm = ({ id }: { id?: string }) => {
         subcategories: (data as any)?.subcategories?.[0]?.subcategory,
         modelNumber: Number((data as any)?.modelNumber) || 0,
         serialNumber: Number((data as any)?.serialNumber) || 0,
-        images: [],
+        images: imagesArray,
         color: (data as any)?.colors || [{ hex: "#000000", title: "Black" }],
         features: (data as any)?.features || [],
       });
@@ -167,12 +188,57 @@ const ProductForm = ({ id }: { id?: string }) => {
             <FormItem className="w-full">
               <FormLabel>Images</FormLabel>
               <FormControl>
-                <FileUploader
-                  value={field.value}
-                  onValueChange={field.onChange}
-                  maxFiles={4}
-                  maxSize={4 * 1024 * 1024}
-                />
+                <div className="grid grid-cols-4 gap-4">
+                  {feildName.map((item) => (
+                    <div key={item} className="  w-full   gap-4">
+                      <label
+                        className="w-full h-[8rem]  rounded-xl overflow-hidden"
+                        htmlFor={item}
+                      >
+                        {productImg[item] ? (
+                          <img
+                            className="w-full h-full rounded-xl  object-cover"
+                            src={
+                              (productImg[item] as string).startsWith("blob")
+                                ? (productImg[item] as string)
+                                : `${process.env.NEXT_PUBLIC_BACKEND_URL}${productImg[item]}`
+                            }
+                          />
+                        ) : (
+                          <div
+                            className={cn(
+                              "group relative grid h-52 w-full cursor-pointer place-items-center rounded-lg border-2 border-dashed border-muted-foreground/25 px-5 py-2.5 text-center transition hover:bg-muted/25",
+                              "ring-offset-background text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                            )}
+                          >
+                            upload
+                          </div>
+                        )}
+                      </label>
+                      <input
+                        id={item}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        hidden
+                        multiple={false}
+                        onChange={(e) => {
+                          console.log((e.target.files as FileList)[0]);
+                          field.onChange([
+                            ...field.value,
+                            (e.target.files as FileList)[0],
+                          ]);
+                          setProductImg({
+                            ...productImg,
+                            [item]: URL.createObjectURL(
+                              (e.target.files as FileList)[0]
+                            ),
+                          });
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

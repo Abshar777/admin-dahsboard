@@ -20,7 +20,9 @@ const ProductList = () => {
 
   if (isPending) return <DataTableSkeleton />;
 
+
   if (data&&(data as TData)?.products) {
+    console.log(data,"data")
     const products = (data as TData).products;
     return (
       <DataTable search={"productName"} data={products} columns={columns} />
