@@ -133,7 +133,7 @@ const SubCategoryForm = ({id}: Props) => {
           <AnimatedButton
             size="md"
             type="submit"
-            text="create Brand"
+            text="create Sub-category "
             loadingText="creating"
             isLoading={isLoading}
           />

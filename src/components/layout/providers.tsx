@@ -11,7 +11,6 @@ export default function Providers({
   session: SessionProviderProps["session"];
   children: React.ReactNode;
 }) {
-
   return (
     <>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
