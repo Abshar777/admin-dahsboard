@@ -75,6 +75,8 @@ const productSchema = z.object({
   inStock: z.number().min(0, "Number must be greater than zero"),
   color: z.array(colorSchema),
   features: z.array(featuresSchema),
+  deliveryCharge: z.number(),
+  serviceCharge: z.number(),
 });
 
 export default productSchema;

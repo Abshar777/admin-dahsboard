@@ -47,6 +47,8 @@ const defaultValues = {
   inStock: 0,
   subcategories: undefined,
   color: [{ hex: "#000000", title: "Black", image: undefined }],
+  deliveryCharge: 0,
+  serviceCharge: 0,
 };
 
 const ProductForm = ({ id }: { id?: string }) => {
@@ -456,6 +458,44 @@ const ProductForm = ({ id }: { id?: string }) => {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="deliveryCharge"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Delivery Charge</FormLabel>  
+                <FormControl> 
+                  <Input
+                    type="number"
+                    step="0.01"
+                    placeholder="Enter delivery charge"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="serviceCharge"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Service Charge</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    placeholder="Enter service charge"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+
         </div>
 
         <div className="space-y-4">

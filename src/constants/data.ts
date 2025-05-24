@@ -66,7 +66,15 @@ export const navItems: NavItem[] = [
     icon: 'order',
     shortcut: ['p', 'p'],
     isActive: false,
-   
+    items:[
+      {
+        title: 'Returned Orders',
+        url: '/admin/orders/returndOrders',
+        icon: 'order',
+        shortcut: ['p', 'p'],
+        isActive: false,
+      },
+    ]
   },
   {
     title: 'Service',

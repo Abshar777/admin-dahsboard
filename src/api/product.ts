@@ -39,7 +39,9 @@ export const createProduct = async (data: {
     inStock: string,
     category: string,
     images: File[];
-    color: { hex: string, titile: string, image: FileList }[]
+    color: { hex: string, titile: string, image: FileList }[],
+    deliveryCharge: string,
+    serviceCharge: string
 }) => {
     const formData = new FormData();
     const colorImg: File[] = [];
@@ -55,7 +57,6 @@ export const createProduct = async (data: {
         formData.append(key, JSON.stringify(value));
     }
     for (let i = 0; i < data.images.length; i++) {
-        console.log(data.images[i])
         formData.append(`image${i + 1}`, data.images[i]);
     }
     colorImg.forEach((file, index) => {

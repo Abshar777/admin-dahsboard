@@ -1,4 +1,4 @@
-import { getOrderById, getOrders, updateOrderStatus } from "@/api/order"
+import { getOrderById, getOrders, getReturnedOrders, updateOrderStatus, updateReturnedOrder } from "@/api/order"
 import { useQueryData } from "./useQueryData"
 import { useMutationData } from "./useMutation";
 
@@ -16,8 +16,21 @@ export const useOrderById = ({ id }: { id: string }) => {
 
 
 export const useEditOrder = ({ id }: { id: string }) => {
-    const {mutate,isPending,isSuccess } = useMutationData(['orderStatus'], (status:string) => updateOrderStatus(id, status), "order");
+    const { mutate, isPending, isSuccess } = useMutationData(['orderStatus'], (status: string) => updateOrderStatus(id, status), "order");
 
     return { isPending, mutate, isSuccess }
- 
+
+}
+
+
+
+export const useReturnedOrders = () => {
+    const { data, isPending } = useQueryData(["returnedOrders"], getReturnedOrders);
+    return { data, isPending }
+}
+
+
+export const useUpdateReturnedOrder = ({ id }: { id: string }) => {
+    const { mutate, isPending, isSuccess } = useMutationData(['returnedOrder'], (returnedRequest: string) => updateReturnedOrder(id, returnedRequest), "order");
+    return { isPending, mutate, isSuccess }
 }

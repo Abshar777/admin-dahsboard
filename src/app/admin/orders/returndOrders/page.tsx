@@ -10,9 +10,10 @@ import { SearchParams } from "nuqs/server";
 import ProductList from "@/components/table/product/product";
 import CatrgoryList from "@/components/table/category/categoryList";
 import OrderList from "@/components/table/order/orderList";
+import ReturnOrderList from "@/components/table/returnOrders/returnOrderList";
 
 export const metadata = {
-  title: "Dashboard: Orders",
+  title: "Dashboard: Returned Orders",
 };
 
 type pageProps = {
@@ -24,21 +25,19 @@ export default async function Page(props: pageProps) {
   // Allow nested RSCs to access the search params (in a type-safe way)
   searchParamsCache.parse(searchParams);
 
-  // This key is used for invoke suspense if any of the search params changed (used for filters).
-  const key = serialize({ ...searchParams });
+
 
   return (
     <PageContainer scrollable={true}>
       <div className="flex flex-1 flex-col space-y-4">
         <div className="flex items-start justify-between">
           <Heading
-            title="Orders"
-            description="orders Listing And Actions "
+            title="Returned Orders"
+            description="Returned orders Listing And Actions "
           />
-        
         </div>
         <Separator />
-        <OrderList />
+        <ReturnOrderList />
       </div>
     </PageContainer>
   );
